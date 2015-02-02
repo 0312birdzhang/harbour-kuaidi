@@ -70,7 +70,7 @@ Page {
                 font.pixelSize: Theme.fontSizeSmall
                 wrapMode: Text.Wrap
                 width: parent.width - (2 * Theme.paddingLarge)
-                text: "源码地址：https://github.com/0312birdzhang/Kuaidi"
+                text: "源码地址：https://github.com/0312birdzhang/harbour-kuaidi"
             }
 
 

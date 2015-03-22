@@ -32,12 +32,12 @@ import "storage.js" as ST
 import Sailfish.Silica 1.0
 Page{
     id:historypage
-    property var  wuliutype
-    property var postid
+    property var wuliutype:""
+    property var postid :""
 
         Component.onCompleted: {
             ST.initialize()
-            ST.getKuaidi()
+            ST.getKuaidi("all")
         }
 
         ListModel {  id:listModel }
@@ -46,6 +46,7 @@ Page{
         SilicaListView {
             id:view
             anchors.fill:parent
+            visible: listModel.count > 0
             header:PageHeader {
                 id:header
                 title: "查询历史"
@@ -58,6 +59,7 @@ Page{
                                 remorseAction("正在删除 ", function() {
                                     listModel.remove(index);
                                     ST.clearKuaidi(id);
+
                                 })
                             }
                          ListView.onRemove: animateRemoval()
@@ -65,7 +67,7 @@ Page{
                            id:showprocess
                            wrapMode: Text.WordWrap
                            x: Theme.paddingLarge
-                           width: root.width-20
+                           width: parent.width-Theme.paddingLarge
                            text: (model.index+1) + ". " +name+":"+postid+"<br/>"
                            color: view.highlighted ? Theme.highlightColor : Theme.primaryColor
                         }
@@ -91,4 +93,11 @@ Page{
 
 
     }
+        Label{
+            id:nohistory
+            visible: listModel.count===0
+            text:"暂无历史记录"
+            anchors.centerIn: parent
+            font.pixelSize: Theme.fontSizeExtraLarge
+        }
 }

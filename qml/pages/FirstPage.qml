@@ -113,6 +113,7 @@ Page {
                 width: input.width + Theme.paddingMedium*2-Theme.paddingSmall
                 height: input.height + Theme.paddingMedium*2
                 anchors.horizontalCenter: parent.horizontalCenter
+
                 border.color:Theme.highlightColor
                 color:"#00000000"
                 radius: 30

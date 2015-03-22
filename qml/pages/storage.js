@@ -70,12 +70,17 @@ function clearByname(name) {
     return res;
 }
 // 获取查询列表
-function getKuaidi() {
+function getKuaidi(all) {
+    var sql='SELECT * FROM kuaidi;';
+    if(all === "three"){
+        sql = 'SELECT * FROM kuaidi limit 3;';
+    }
+
     var db = getDatabase();
     var res="";
     listModel.clear()
     db.transaction(function(tx) {
-        var rs = tx.executeSql('SELECT * FROM kuaidi;');
+        var rs = tx.executeSql(sql);
         if (rs.rows.length > 0) {
             for(var i = 0; i < rs.rows.length; i++){
                 listModel.append({
@@ -85,8 +90,6 @@ function getKuaidi() {
                                  }
                                  )
             }
-        } else {
-            header.title="无结果";
         }
     });
 }

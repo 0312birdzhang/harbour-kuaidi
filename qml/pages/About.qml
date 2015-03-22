@@ -41,7 +41,7 @@ Page {
         Column {
             id:column
             PageHeader {
-                title: "关于本软件"
+                title: "关于"
             }
 
             spacing: Theme.paddingSmall

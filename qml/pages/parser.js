@@ -28,11 +28,11 @@ function load(type,postid) {
 function loaded(jsonObject)
 {
     if(jsonObject.status != "200" ){
-        //savebutton.enabled = false;
+        savebutton.enabled = true;
         listModel.append({
                              "sort":"",
                              "time":"错误代码："+jsonObject.status,
-                             "context":jsonObject.message
+                             "context":jsonObject.message+"<br/>请保存订单稍后再试"
                          });
     }
     else{

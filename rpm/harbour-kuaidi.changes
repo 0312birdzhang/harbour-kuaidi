@@ -8,5 +8,8 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
-* Sun Apr 13 2014 Jack Tar <jack.tar@example.com> 0.0.1-1
-美化界面，适配其他分辨率设备
+# * 2015年3月20日12:58:27
+#在卡片页面添加最近的查询记录
+
+# * 2015年1月20日12:58:42
+#美化界面，适配其他分辨率设备

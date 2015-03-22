@@ -30,21 +30,48 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import "../pages/storage.js" as ST
 
 CoverBackground {
-    Image {
-        id: back
-        source: "../cover.png"
-        anchors.fill: parent
-        fillMode: Image.PreserveAspectCrop
+    id:cover
+    Component.onCompleted: {
+        ST.getKuaidi("three")
     }
-    Label {
-        id: label
+
+    ListModel {  id:listModel }
+
+    SilicaListView {
+        id:view
+        visible: listModel.count>0
+        anchors.fill:parent
+        anchors.topMargin: Theme.paddingLarge
+        model : listModel
+        clip: true
+        delegate:Text{
+                       wrapMode: Text.WordWrap
+                       x: Theme.paddingMedium
+                       width: parent.width-Theme.paddingLarge
+                       text: (model.index+1) + ". " +name+":"+postid
+                       color: Theme.highlightColor
+                       font.pixelSize: Theme.fontSizeTiny
+                    }
+               VerticalScrollDecorator {}
+
+    }
+
+    Image{
+        id:logo
+        fillMode: Image.Stretch;
+        source:"../harbour-kuaidi.png"
+        anchors.centerIn: parent
+        anchors.topMargin: Theme.paddingLarge
+    }
+    Label{
+        text:qsTr("我的快递")
+        anchors.top:logo.bottom
+        anchors.topMargin: Theme.paddingLarge
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: parent.height * 0.15
-        color: label.highlighted ? Theme.highlightColor : Theme.primaryColor
-        text: qsTr("我的快递")
+        //color: Theme.highlightColor
     }
 }
 

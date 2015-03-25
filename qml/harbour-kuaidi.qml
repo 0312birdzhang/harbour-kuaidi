@@ -31,12 +31,15 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "pages"
-
+import "pages/storage.js" as ST
 ApplicationWindow{
     id:window
     initialPage: Component { FirstPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
 
+    Component.onCompleted: {
+        ST.initialize();
+    }
 }
 
 

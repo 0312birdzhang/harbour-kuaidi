@@ -32,7 +32,8 @@ function loaded(jsonObject)
         listModel.append({
                              "sort":"",
                              "time":"错误代码："+jsonObject.status,
-                             "context":jsonObject.message+"<br/>请保存订单稍后再试"
+                             "context":jsonObject.message+"<br/><br/>"+"<font color='" + Theme.highlightColor + "'>可能存在"+
+                              "快递延误,请保存订单稍后再试^_^</font>"
                          });
     }
     else{

@@ -69,7 +69,7 @@ Page{
                     enabled: false
                     text: qsTr("保存订单")
                     onClicked:{
-                        ST.initialize()
+
                         var isExist = ST.isExist(postid)
                         //先查询是否有此条记录
                         if(isExist == "true"){

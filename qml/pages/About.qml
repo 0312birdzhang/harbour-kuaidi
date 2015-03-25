@@ -159,10 +159,11 @@ Page {
                     leftMargin: Theme.paddingLarge
                 }
                 color: Theme.primaryColor
-                font.pixelSize: Theme.fontSizeSmall
+                font.pixelSize: Theme.fontSizeTiny
                 width: parent.width - (2 * Theme.paddingLarge)
                 wrapMode: Text.Wrap
-                text: "优化查询首页UI,更改保存订单方式为下拉菜单等"
+                text:"v0.5 在cover页面添加最近三条查询记录，去掉订单错误代码的情况下不能保存的校验<br/>"
+                    +"v0.4 优化查询首页UI,更改保存订单方式为下拉菜单等"
             }
         }
     }

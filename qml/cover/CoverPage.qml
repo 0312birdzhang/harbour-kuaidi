@@ -35,8 +35,12 @@ import "../pages/storage.js" as ST
 CoverBackground {
     id:cover
     Component.onCompleted: {
-        ST.getKuaidi("three")
+        ST.getKuaidi("three");
     }
+
+    onStatusChanged: {
+        ST.getKuaidi("three");
+        }
 
     ListModel {  id:listModel }
 

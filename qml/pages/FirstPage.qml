@@ -30,12 +30,26 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-
+import "./parser.js" as JS
 
 Page {
     id: page
+    //property string searchString
     property int operationType: PageStackAction.Animated
+    //onSearchStringChanged: postnames.update()
+    Component.onCompleted: {
+        for ( var i in JS.allpost   ){
+            postnames.append({"label":JS.allpost[i].label,
+                                 "value":JS.allpost[i].value
+                             });
+        }
+    }
+    ListModel {
+        id: postnames
+        function update(){
 
+        }
+    }
     SilicaFlickable {
         anchors.fill: parent
         PullDownMenu {
@@ -45,53 +59,7 @@ Page {
             }
         }
         contentHeight: column.height
-        ListModel {
-            id: orientationLockModel
-            ListElement {
-                label: "申通"
-                value: "shentong"
-            }
-            ListElement {
-                label: "EMS"
-                value: "ems"
-            }
-            ListElement {
-                label: "顺丰"
-                value: "shunfeng"
-            }
-            ListElement {
-                label: "圆通"
-                value: "yuantong"
-            }
-            ListElement {
-                label: "中通"
-                value: "zhongtong"
-            }
-            ListElement {
-                label: "韵达"
-                value: "yunda"
-            }
-            ListElement {
-                label: "天天"
-                value: "tiantian"
-            }
-            ListElement {
-                label: "汇通"
-                value: "huitongkuaidi"
-            }
-            ListElement {
-                label: "全峰"
-                value: "quanfengkuaidi"
-            }
-            ListElement {
-                label: "德邦"
-                value: "debangwuliu"
-            }
-            ListElement {
-                label: "宅急送"
-                value: "zhaijisong"
-            }
-        }
+
 
         MouseArea{
             anchors.fill: parent;
@@ -128,21 +96,39 @@ Page {
                     ComboBox {
                         id: orientationLockCombo
                         label:"选择快递商"
+//                        SearchField {
+//                            id: searchField
+//                            width: parent.width/2
+//                            Binding {
+//                                target: orientationLockCombo
+//                                property: "searchString"
+//                                value: searchField.text.toLowerCase().trim()
+//                            }
+//                        }
                         menu: ContextMenu {
                             Repeater {
-                                model: orientationLockModel
+                                model: postnames
                                 MenuItem {
                                     text: label
                                 }
                             }
+
                         }
+                         onCurrentIndexChanged:{
+                             var currIndex = orientationLockCombo.currentIndex;
+                             if( currIndex == 1 ||currIndex ==  2||currIndex ==  4||currIndex ==  5||currIndex == 7||currIndex ==  8||currIndex == 9){
+                                 postid.inputMethodHints = Qt.ImhFormattedNumbersOnly
+                             }else{
+                                 postid.inputMethodHints = (Qt.ImhNoAutoUppercase | Qt.ImhUrlCharactersOnly | Qt.ImhNoPredictiveText)
+                             }
+                         }
 
                     }
                     TextField {
                         id:postid
                         width:page.width - Theme.paddingLarge*4
                         height:implicitHeight
-                        inputMethodHints: Qt.ImhNoAutoUppercase | Qt.ImhUrlCharactersOnly | Qt.ImhNoPredictiveText
+                        inputMethodHints:Qt.ImhNoAutoUppercase | Qt.ImhUrlCharactersOnly | Qt.ImhNoPredictiveText
                         echoMode: TextInput.Normal
                         font.pixelSize: Theme.fontSizeMedium
                         placeholderText: "请输入快递号"
@@ -160,7 +146,7 @@ Page {
                                     postid.placeholderText="请输入快递号";
                                     pageStack.push(Qt.resolvedUrl("ShowPage.qml"),
                                                    {
-                                                       "wuliutype":orientationLockModel.get(orientationLockCombo.currentIndex).value,
+                                                       "wuliutype":postnames.get(orientationLockCombo.currentIndex).value,
                                                        "postid":postid.text,
                                                        "wuliuming":orientationLockCombo.value
                                                    });

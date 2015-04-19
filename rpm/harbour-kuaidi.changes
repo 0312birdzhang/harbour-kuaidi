@@ -8,6 +8,12 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sat Apr 18 2016 birdzhang <0312birdzhang@gmail.com> 0.8.2
+-[modify]根据快递商自动更改输入单号的输入法，由于太多，只做了常用了的快递商
+
+* Sat Apr 18 2016 birdzhang <0312birdzhang@gmail.com> 0.8.1
+-[add]添加所有的快递商，应该不会找不到了
+
 * Fri Mar 28 2016 birdzhang <0312birdzhang@gmail.com> 0.7.1
 -[fix]修复物流信息不能滑动的bug
 -[add]添加保存消息提示

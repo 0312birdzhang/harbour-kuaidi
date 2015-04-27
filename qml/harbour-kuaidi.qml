@@ -40,6 +40,7 @@ ApplicationWindow{
     Component.onCompleted: {
         ST.initialize();
     }
+
     Item{
         id:notiItem
         width: parent.width
@@ -67,6 +68,7 @@ ApplicationWindow{
             var notiItem = noti.createObject(notificationBar, { "text": text, "time": time })
         }
     }
+
 }
 
 

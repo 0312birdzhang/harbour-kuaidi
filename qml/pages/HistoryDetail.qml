@@ -36,6 +36,7 @@ Page{
     property var id
     property var name
     property var postid
+
     property var description
     property var postinfo
     property int operationType: PageStackAction.Animated
@@ -43,6 +44,7 @@ Page{
         Component.onCompleted: {
             ST.themeColor =  Theme.highlightColor;
             description = ST.getKuaidiInfo(id);
+
         }
         BusyIndicator {
                   id:progress
@@ -51,6 +53,7 @@ Page{
                   size: BusyIndicatorSize.Large
                   anchors.centerIn: parent
           }
+
 
         SilicaFlickable{
             id:view
@@ -139,4 +142,5 @@ Page{
             interval: 60000;
             onTriggered: addNotification("加载失败",3)
         }
+
 }

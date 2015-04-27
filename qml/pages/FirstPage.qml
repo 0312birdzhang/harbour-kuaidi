@@ -30,6 +30,7 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+
 import "./parser.js" as JS
 
 Page {
@@ -50,6 +51,7 @@ Page {
 
         }
     }
+
     SilicaFlickable {
         anchors.fill: parent
         PullDownMenu {
@@ -59,7 +61,6 @@ Page {
             }
         }
         contentHeight: column.height
-
 
         MouseArea{
             anchors.fill: parent;
@@ -96,6 +97,7 @@ Page {
                     ComboBox {
                         id: orientationLockCombo
                         label:"选择快递商"
+
 //                        SearchField {
 //                            id: searchField
 //                            width: parent.width/2
@@ -108,10 +110,12 @@ Page {
                         menu: ContextMenu {
                             Repeater {
                                 model: postnames
+
                                 MenuItem {
                                     text: label
                                 }
                             }
+
 
                         }
                          onCurrentIndexChanged:{
@@ -123,12 +127,15 @@ Page {
                              }
                          }
 
+
                     }
                     TextField {
                         id:postid
                         width:page.width - Theme.paddingLarge*4
                         height:implicitHeight
+
                         inputMethodHints:Qt.ImhNoAutoUppercase | Qt.ImhUrlCharactersOnly | Qt.ImhNoPredictiveText
+
                         echoMode: TextInput.Normal
                         font.pixelSize: Theme.fontSizeMedium
                         placeholderText: "请输入快递号"
@@ -146,7 +153,9 @@ Page {
                                     postid.placeholderText="请输入快递号";
                                     pageStack.push(Qt.resolvedUrl("ShowPage.qml"),
                                                    {
+
                                                        "wuliutype":postnames.get(orientationLockCombo.currentIndex).value,
+
                                                        "postid":postid.text,
                                                        "wuliuming":orientationLockCombo.value
                                                    });

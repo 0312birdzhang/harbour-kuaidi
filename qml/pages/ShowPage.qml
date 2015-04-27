@@ -41,7 +41,9 @@ Page{
     SilicaFlickable {
         anchors.fill: parent
         Component.onCompleted: {
+
             ST.themeColor =  Theme.highlightColor;
+
             JS.load(wuliutype,postid);
         }
         BusyIndicator {
@@ -73,6 +75,7 @@ Page{
 
                         var isExist = ST.isExist(postid)
                         //先查询是否有此条记录
+
                         if(isExist.indexOf("true") !== -1){
                             savebutton.text ="你已经保存过了";
                             savebutton.enabled = false;
@@ -102,6 +105,7 @@ Page{
 
         }
     }
+
 
     Component {
         id: firstWizardPage
@@ -182,4 +186,5 @@ Page{
         interval: 60000;
         onTriggered: addNotification("加载失败",3)
     }
+
 }

@@ -1,6 +1,7 @@
 .import QtQuick.LocalStorage 2.0 as SQL//数据库连接模块
 
 var themeColor;
+
 // 首先创建一个helper方法连接数据库
 function getDatabase() {
     return SQL.LocalStorage.openDatabaseSync("mykuaidi", "1.0", "postinfo", 10000);
@@ -18,6 +19,7 @@ function initialize() {
 
                 });
 }
+
 
 var saveResult;
 // 插入数据
@@ -42,6 +44,7 @@ function setKuaidi(postid, wuliutype,description) {
          saveResult = "Error";
     }
     return saveResult;
+
 }
 
 // 清除数据
@@ -80,9 +83,11 @@ function clearByname(name) {
 }
 // 获取查询列表
 function getKuaidi(all) {
+
     var sql='SELECT * FROM kuaidi order by id desc;';
     if(all === "three"){
         sql = 'SELECT * FROM kuaidi order by id desc limit 3;';
+
     }
 
     var db = getDatabase();
@@ -97,6 +102,7 @@ function getKuaidi(all) {
                                      "postid":rs.rows.item(i).postid,
                                      "name":dictnames(rs.rows.item(i).name),
                                      "description":rs.rows.item(i).description
+
                                  }
                                  )
             }
@@ -111,12 +117,14 @@ function getKuaidiInfo(id) {
     var name="";
     var postid="";
     var description;
+
     var res="";
     db.transaction(function(tx) {
         var rs = tx.executeSql('SELECT * FROM kuaidi where id =?;',[id]);
         if (rs.rows.length > 0) {
             postid = rs.rows.item(0).postid;
             name = rs.rows.item(0).name;
+
             description = rs.rows.item(0).description;
             load(name,postid);
 
@@ -126,6 +134,7 @@ function getKuaidiInfo(id) {
 
         }
     });
+
     return description;
 }
 
@@ -147,8 +156,11 @@ function isExist(postid) {
     });
 
 
+
     return exist;
+
 }
+
 
 
 
@@ -170,6 +182,7 @@ function load(type,postid) {
 
                 loaded(jsonObject);
 
+
             }
         }
     }
@@ -182,10 +195,10 @@ function loaded(jsonObject){
     var alltext="<br>";
     if(jsonObject.status != "200" ){
         alltext = "错误代码："+jsonObject.status+"<br >"+jsonObject.message;
+
     }
     else{
-        for ( var process in jsonObject.data   )
-        {
+        for ( var process in jsonObject.data   ){
             //最近物流根据主题高亮
             if( process == 0 ){
 
@@ -226,4 +239,3 @@ function dictnames(name){
     }
 
 }
-

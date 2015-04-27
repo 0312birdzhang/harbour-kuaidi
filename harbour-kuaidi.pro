@@ -29,6 +29,7 @@ OTHER_FILES += qml/harbour-kuaidi.qml \
     qml/pages/Notification.qml \
     qml/pages/notifactionbar.png
 
+
 # to disable building translations every time, comment out the
 # following CONFIG line
 CONFIG += sailfishapp_i18n

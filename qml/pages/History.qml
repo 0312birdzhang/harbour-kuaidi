@@ -61,6 +61,8 @@ Page{
                                     ST.clearKuaidi(id);
 
 
+
+
                                 })
                             }
                          ListView.onRemove: animateRemoval()

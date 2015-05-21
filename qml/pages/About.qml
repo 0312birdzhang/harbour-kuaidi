@@ -31,7 +31,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 Page {
     id: aboutpage
-
+    allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
     SilicaFlickable {
         anchors.fill: parent
 
@@ -59,7 +59,7 @@ Page {
                 font.pixelSize: Theme.fontSizeSmall
                 width: parent.width - (2 * Theme.paddingLarge)
                 wrapMode: Text.Wrap
-                text: qsTr("作者:0312birdzhang")
+                text: "作者:0312birdzhang"
             }
             Label {
                 anchors {
@@ -162,7 +162,8 @@ Page {
                 font.pixelSize: Theme.fontSizeTiny*1.5
                 width: parent.width - (2 * Theme.paddingLarge)
                 wrapMode: Text.Wrap
-                text:"v0.8 添加所有的快递商.更改单号默认输入法<br/>"
+                text:"v0.9 添加修改备注以及历史记录显示备注，添加屏幕旋转自适应<br/>"
+                    +"v0.8 添加所有的快递商.更改单号默认输入法<br/>"
                     +"v0.7 修复物流信息不能滑动的bug;添加保存消息提示;修改备注输入框样式.<br/>"
                     +"v0.6 修改连续保存提示已经保存过的bug;添加备注，第一次使用会保存不进去，再保存一次即可.<br/>"
                     +"v0.5 在cover页面添加最近三条查询记录，去掉订单错误代码的情况下不能保存的校验<br/>"

@@ -27,7 +27,8 @@ OTHER_FILES += qml/harbour-kuaidi.qml \
     harbour-kuaidi.desktop \
     rpm/harbour-kuaidi.changes \
     qml/pages/Notification.qml \
-    qml/pages/notifactionbar.png
+    qml/pages/notifactionbar.png \
+    qml/pages/allposts.js
 
 
 # to disable building translations every time, comment out the

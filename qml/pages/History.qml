@@ -32,16 +32,15 @@ import "storage.js" as ST
 import Sailfish.Silica 1.0
 Page{
     id:historypage
-    property var wuliutype:""
-    property var postid :""
+    allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
 
-        Component.onCompleted: {
+    Component.onCompleted: {
             ST.initialize()
             ST.getKuaidi("all")
         }
+    //onOrientationChanged: ST.getKuaidi("all")
 
         ListModel {  id:listModel }
-
 
         SilicaListView {
             id:view
@@ -51,32 +50,54 @@ Page{
                 id:header
                 title: "查询历史"
             }
+            width:parent.width
             model : listModel
             clip: true
             delegate:ListItem {
                             menu: contextMenuComponent
                             function remove(id) {
-                                remorseAction("正在删除 ", function() {
+                                remorseAction("正在删除...", function() {
                                     listModel.remove(index);
                                     ST.clearKuaidi(id);
-
-
-
-
                                 })
                             }
-                         ListView.onRemove: animateRemoval()
-                        Text{
+
+                        ListView.onRemove: animateRemoval()
+                        Label{
                            id:showprocess
                            wrapMode: Text.WordWrap
-                           x: Theme.paddingLarge
-                           width: parent.width-Theme.paddingLarge
-                           text: (model.index+1) + ". " +name+":"+postid+"<br/>"
+                           x:Theme.paddingLarge
+                           maximumLineCount:1
+                           truncationMode: TruncationMode.Fade
+                           width: parent.width-Theme.paddingLarge *2
+                           text: (model.index+1) + ". "+description
                            color: view.highlighted ? Theme.highlightColor : Theme.primaryColor
                         }
+                        Label{
+                            id:postinfo
+                            width: parent.width-Theme.paddingLarge
+                            text:name+":"+postid
+                            color: Theme.highlightColor
+                            font.pixelSize: Theme.fontSizeTiny
+                            font.italic :true
+                            anchors{
+                                top:showprocess.bottom
+                                left:parent.left
+                                right:parent.right
+                                leftMargin: Theme.paddingLarge*2
+                            }
+                        }
+
                         Component {
                             id: contextMenuComponent
                             ContextMenu {
+                                id:contextMenu
+                                MenuItem {
+                                    text: "编辑"
+                                    onClicked: {
+                                        pageStack.push(updatePage,{"id":id,"postid":postid,"description":description})
+                                    }
+                                }
                                 MenuItem {
                                     text: "删除"
                                     onClicked: remove(id)
@@ -84,7 +105,11 @@ Page{
                             }
                         }
                         onClicked: {
-                            pageStack.push(Qt.resolvedUrl("HistoryDetail.qml"), { "id":id})
+                            pageStack.push(Qt.resolvedUrl("HistoryDetail.qml"),
+                                                { "id":id,
+                                               "wuliutype":name,
+                                               "postid":postid
+                                                    })
 
                        }
 
@@ -95,6 +120,92 @@ Page{
 
 
 
+    }
+     Component {
+            id: updatePage
+        Dialog {
+            id:editDialog
+            property var id :""
+            property var postid:""
+            property var description :""
+            canAccept: subcomments.text.length > 0 && postid.text.length >0
+            acceptDestination: historypage
+            acceptDestinationAction: PageStackAction.Pop
+            allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
+
+            onAccepted: {
+                var test = ST.updateKuaidi(id,postid.text,subcomments.text);
+                if(test === "OK"){
+                    ST.getKuaidi("all")
+                    addNotification("更新成功", 3)
+                }else{
+                    addNotification("更新失败", 3)
+                }
+            }
+
+           SilicaFlickable {
+
+                width: parent.width
+                height: parent.height
+                interactive: false
+                anchors.fill: parent
+                contentHeight: column.height
+                Column{
+                    id: column
+                    width: parent.width
+                    height: rectangle.height
+                    DialogHeader {
+
+                    }
+                    anchors{
+                        //top:dialogHead.bottom
+                        left:parent.left
+                        right:parent.right
+                    }
+
+                    spacing: Theme.paddingLarge
+                    Rectangle{
+                        id:rectangle
+                        width: parent.width-Theme.paddingLarge
+                        height: subcomments.height + postid.height + Theme.paddingLarge*3
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        border.color:Theme.highlightColor
+                        color:"#00000000"
+                        radius: 30
+                        TextArea {
+                            id:postid
+                            anchors{
+                                topMargin: Theme.paddingMedium
+                            }
+                            text:editDialog.postid
+                            width:Screen.width - Theme.paddingLarge*4
+                            height: Math.max(Theme.itemSizeMedium,implicitHeight)
+                            font.pixelSize: Theme.fontSizeMedium
+                            placeholderText: "编辑您的快递单号"
+                            label: "单号"
+                        }
+                        TextArea {
+                            id:subcomments
+                            anchors{
+                                bottom:rectangle.bottom
+                                topMargin: Theme.paddingMedium
+                            }
+                            text:editDialog.description
+                            width:Screen.width - Theme.paddingLarge*4
+                            height: Math.max(Screen.width/3, implicitHeight)
+                            font.pixelSize: Theme.fontSizeMedium
+                            placeholderText: "编辑您的备注"
+                            label: "备注"
+                        }
+
+                    }
+
+                }
+
+
+
+            }
+        }
     }
         Label{
             id:nohistory

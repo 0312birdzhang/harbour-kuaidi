@@ -1,4 +1,5 @@
 .import QtQuick.LocalStorage 2.0 as SQL//数据库连接模块
+Qt.include("allposts.js");
 
 var themeColor;
 
@@ -81,6 +82,25 @@ function clearByname(name) {
     );
     return res;
 }
+
+
+
+//根据id更新
+function updateKuaidi(id,postid,description) {
+    var db = getDatabase();
+    var res = "";
+    db.transaction(function(tx) {
+        var rs = tx.executeSql('update kuaidi set postid = ? ,description=? where id =?;',[postid,description,id]);
+        if (rs.rowsAffected > 0) {
+            res = "OK";
+        } else {
+            res = "Error";
+        }
+    }
+    );
+    return res;
+}
+
 // 获取查询列表
 function getKuaidi(all) {
 
@@ -110,13 +130,14 @@ function getKuaidi(all) {
     });
 }
 
+var description;
 // 获取单条查询记录
 function getKuaidiInfo(id) {
     progress.visible=true;
     var db = getDatabase();
     var name="";
     var postid="";
-    var description;
+
 
     var res="";
     db.transaction(function(tx) {
@@ -170,7 +191,7 @@ function isExist(postid) {
 function load(type,postid) {
 
     var xhr = new XMLHttpRequest();
-    var url="http://www.kuaidi100.com/query?type="+type+"&postid="+postid
+    var url="http://m.kuaidi100.com/query?type="+type+"&postid="+postid+"&id=1&valicode=&temp="+getRandom();
     xhr.open("GET",url,true);
     xhr.onreadystatechange = function()
     {
@@ -194,7 +215,7 @@ function load(type,postid) {
 function loaded(jsonObject){
     var alltext="<br>";
     if(jsonObject.status != "200" ){
-        alltext = "错误代码："+jsonObject.status+"<br >"+jsonObject.message;
+        alltext = jsonObject.message;
 
     }
     else{
@@ -202,10 +223,10 @@ function loaded(jsonObject){
             //最近物流根据主题高亮
             if( process == 0 ){
 
-                    alltext += "<font color='"+themeColor+"'>"+jsonObject.data[process].time+"</font><br><font color='"+themeColor+"'>"+jsonObject.data[process].context+"</font>"+"<br>"
+                    alltext += "<font color='"+themeColor+"'>"+jsonObject.data[process].time+"</font><br><font color='"+themeColor+"'>"+jsonObject.data[process].context+"</font>"+"<br><br>"
                 }else{
 
-                    alltext += jsonObject.data[process].time+"<br>"+jsonObject.data[process].context+"<br>";
+                    alltext += jsonObject.data[process].time+"<br>"+jsonObject.data[process].context+"<br><br>";
                 }
         }
 
@@ -216,23 +237,16 @@ function loaded(jsonObject){
 }
 
 //快递字典
+
+
 function dictnames(name){
 
-    var postnames={
-         "shentong":"申通",
-         "ems":"EMS",
-        "shunfeng":"顺丰" ,
-         "yuantong":"圆通",
-        "zhongtong":"中通" ,
-         "yunda":"韵达",
-        "tiantian" :"天天",
-         "huitongkuaidi":"汇通",
-        "quanfengkuaidi" :"全峰",
-         "debangwuliu":"德邦",
-        "zhaijisong:":"宅急送"
-    }
     try{
-        return postnames[name];
+        for ( var i in allpost   ){
+            if(name == allpost[i].value){
+                return allpost[i].label
+            }
+        }
     }
     catch(e){
         return "error"

@@ -38,9 +38,9 @@ Page{
     property var postid
 
     property var description
-    property var postinfo
+    property var postinfo:""
     property int operationType: PageStackAction.Animated
-
+    allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
         Component.onCompleted: {
             ST.themeColor =  Theme.highlightColor;
             description = ST.getKuaidiInfo(id);
@@ -54,17 +54,24 @@ Page{
                   anchors.centerIn: parent
           }
 
-
         SilicaFlickable{
             id:view
             anchors.fill: parent
-            anchors.margins: Theme.paddingLarge
             contentHeight: header.height+descLabel.height+desc.height+postLabel.height+postinfoLabel.height + Theme.paddingLarge
 
-                PageHeader {
-                    id:header
-                    title: "物流信息"
+            PageHeader {
+                id:header
+                title: "物流信息"
+            }
+            PullDownMenu{
+                MenuItem{
+                    text:"刷新"
+                    onClicked: {
+                         ST.getKuaidiInfo(id);
+                    }
                 }
+            }
+
             Separator {
                 width:parent.width - descLabel.width;
                 color: Theme.highlightColor
@@ -72,6 +79,7 @@ Page{
                     right: descLabel.left
                     top:descLabel.top
                     topMargin: descLabel.height/2
+                    margins: Theme.paddingLarge
                 }
             }
             Label{
@@ -82,7 +90,7 @@ Page{
                 anchors{
                     right: parent.right
                     top:header.bottom
-                    topMargin: Theme.paddingLarge
+                    margins: Theme.paddingLarge
                 }
             }
 
@@ -99,6 +107,7 @@ Page{
                     //horizontalCenter: parent.horizontalCenter
                     left:parent.left
                     right:parent.right
+                    margins: Theme.paddingLarge
                 }
             }
             Separator {
@@ -117,6 +126,7 @@ Page{
                 color: Theme.highlightColor
                 font.pixelSize: Theme.fontSizeMedium
                 anchors{
+                    margins: Theme.paddingLarge
                     top:desc.bottom
                     right: parent.right
                 }
@@ -124,8 +134,10 @@ Page{
             Label{
                 id:postinfoLabel
                 anchors{
+                    left:parent.left
+                    right:parent.right
                     top:postLabel.bottom
-                    horizontalCenter: parent.horizontalCenter
+                    margins: Theme.paddingLarge
                 }
 
                 wrapMode: Text.WordWrap
@@ -139,7 +151,7 @@ Page{
 
         Timer{
             id:processingtimer;
-            interval: 60000;
+            interval: 30000;
             onTriggered: addNotification("加载失败",3)
         }
 

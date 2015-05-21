@@ -32,16 +32,18 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 import "./parser.js" as JS
+import "./allposts.js" as Posts
 
 Page {
     id: page
     //property string searchString
     property int operationType: PageStackAction.Animated
+    allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
     //onSearchStringChanged: postnames.update()
     Component.onCompleted: {
-        for ( var i in JS.allpost   ){
-            postnames.append({"label":JS.allpost[i].label,
-                                 "value":JS.allpost[i].value
+        for ( var i in Posts.allpost   ){
+            postnames.append({"label":Posts.allpost[i].label,
+                                 "value":Posts.allpost[i].value
                              });
         }
     }
@@ -56,7 +58,7 @@ Page {
         anchors.fill: parent
         PullDownMenu {
             MenuItem {
-                text: qsTr("关于")
+                text: "关于"
                 onClicked: pageStack.push(Qt.resolvedUrl("About.qml"))
             }
         }
@@ -72,14 +74,14 @@ Page {
         Column {
             id: column
             x:orientationLockCombo.x
-            width: page.width
+            width: parent.width
             spacing: Theme.paddingLarge
             PageHeader {
                 title: "我的快递"
             }
             Rectangle{
                 id:rectangle
-                width: input.width + Theme.paddingMedium*2-Theme.paddingSmall
+                width: parent.width - Theme.paddingLarge *2
                 height: input.height + Theme.paddingMedium*2
                 anchors.horizontalCenter: parent.horizontalCenter
 
@@ -92,10 +94,11 @@ Page {
                         top:rectangle.top
                         topMargin: Theme.paddingMedium
                     }
-
+                    width:parent.width
                     spacing: Theme.paddingMedium
                     ComboBox {
                         id: orientationLockCombo
+                        width: parent.width
                         label:"选择快递商"
 
 //                        SearchField {
@@ -131,7 +134,7 @@ Page {
                     }
                     TextField {
                         id:postid
-                        width:page.width - Theme.paddingLarge*4
+                        width:parent.width - Theme.paddingMedium
                         height:implicitHeight
 
                         inputMethodHints:Qt.ImhNoAutoUppercase | Qt.ImhUrlCharactersOnly | Qt.ImhNoPredictiveText

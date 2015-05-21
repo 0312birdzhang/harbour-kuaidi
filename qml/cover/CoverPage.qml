@@ -51,11 +51,13 @@ CoverBackground {
         anchors.topMargin: Theme.paddingLarge
         model : listModel
         clip: true
-        delegate:Text{
+        delegate:Label{
                        wrapMode: Text.WordWrap
-                       x: Theme.paddingMedium
-                       width: parent.width-Theme.paddingLarge
-                       text: (model.index+1) + ". " +name+":"+postid
+                       x: Theme.paddingSmall
+                       maximumLineCount:1
+                       truncationMode: TruncationMode.Fade
+                       width: parent.width-Theme.paddingMedium
+                       text: (model.index+1) + ". " +description
                        color: Theme.highlightColor
                        font.pixelSize: Theme.fontSizeTiny
                     }
@@ -68,10 +70,10 @@ CoverBackground {
         fillMode: Image.Stretch;
         source:"../harbour-kuaidi.png"
         anchors.centerIn: parent
-        anchors.topMargin: Theme.paddingLarge
+        anchors.topMargin: Theme.paddingLarge*2
     }
     Label{
-        text:qsTr("我的快递")
+        text:"我的快递"
         anchors.top:logo.bottom
         anchors.topMargin: Theme.paddingLarge
         anchors.horizontalCenter: parent.horizontalCenter

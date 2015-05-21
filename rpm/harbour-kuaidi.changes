@@ -8,7 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
-<<<<<<< HEAD
+* Sat Apr 29 2016 birdzhang <0312birdzhang@gmail.com> 0.9.1
+-[add]添加编辑备注，添加屏幕自动旋转，添加历史记录显示备注等
+
 * Sat Apr 18 2016 birdzhang <0312birdzhang@gmail.com> 0.8.2
 -[modify]根据快递商自动更改输入单号的输入法，由于太多，只做了常用了的快递商
 
@@ -27,11 +29,3 @@
 * Thu Mar 26 2016 birdzhang <0312birdzhang@gmail.com> 0.5.1
 -在卡片页面添加最近的查询记录
 
-
-=======
-# * 2015年3月20日12:58:27
-#在卡片页面添加最近的查询记录
-
-# * 2015年1月20日12:58:42
-#美化界面，适配其他分辨率设备
->>>>>>> c5a496d1a9d748616d1b58d922287a0cc12e1626

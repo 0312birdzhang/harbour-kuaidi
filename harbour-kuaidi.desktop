@@ -6,9 +6,6 @@ Exec=harbour-kuaidi
 Name=我的快递
 # translation example:
 # your app name in German locale (de)
-<<<<<<< HEAD
-Name[de]=MyKuaidi
-=======
-Name[de]=harbour-kuaidi
->>>>>>> c5a496d1a9d748616d1b58d922287a0cc12e1626
+Name[de]=Kuaidi
+
 

@@ -37,7 +37,7 @@ Page{
     property var postid
     property var wuliuming
     property int operationType: PageStackAction.Animated
-
+    allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
     SilicaFlickable {
         anchors.fill: parent
         Component.onCompleted: {
@@ -63,14 +63,14 @@ Page{
             model : listModel
             header:PageHeader {
                 id:header
-                title: qsTr("物流情况")
+                title: "物流情况"
             }
             clip: true
             PullDownMenu {
                 MenuItem {
                     id:savebutton
                     enabled: false
-                    text: qsTr("保存订单")
+                    text: "保存订单"
                     onClicked:{
 
                         var isExist = ST.isExist(postid)
@@ -164,7 +164,7 @@ Page{
                                 bottom:rectangle.bottom
                                 topMargin: Theme.paddingMedium
                             }
-                            width:window.width - Theme.paddingLarge*4
+                            width:Screen.width - Theme.paddingLarge*4
                             height: Math.max(showpage.width/3, implicitHeight)
                             font.pixelSize: Theme.fontSizeMedium
                             placeholderText: "输入您的备注"

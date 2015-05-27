@@ -47,10 +47,14 @@ Page {
                              });
         }
     }
+    onStatusChanged: {
+        if (status == PageStatus.Active) {
+            mystep =0;
+        }
+    }
     ListModel {
         id: postnames
         function update(){
-
         }
     }
 

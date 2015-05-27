@@ -162,7 +162,8 @@ Page {
                 font.pixelSize: Theme.fontSizeTiny*1.5
                 width: parent.width - (2 * Theme.paddingLarge)
                 wrapMode: Text.Wrap
-                text:"v0.9 添加修改备注以及历史记录显示备注，添加屏幕旋转自适应<br/>"
+                text:"v1.0 历史记录添加时间显示;covery页面变化显示<br/>"
+                    +"v0.9 添加修改备注以及历史记录显示备注，添加屏幕旋转自适应<br/>"
                     +"v0.8 添加所有的快递商.更改单号默认输入法<br/>"
                     +"v0.7 修复物流信息不能滑动的bug;添加保存消息提示;修改备注输入框样式.<br/>"
                     +"v0.6 修改连续保存提示已经保存过的bug;添加备注，第一次使用会保存不进去，再保存一次即可.<br/>"

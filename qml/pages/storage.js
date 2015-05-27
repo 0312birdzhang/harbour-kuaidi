@@ -16,9 +16,12 @@ function initialize() {
     db.transaction(
                 function(tx) {
                     // 如果表存在，则跳过此步
-                    tx.executeSql('CREATE TABLE IF NOT EXISTS kuaidi(id integer primary key AutoIncrement,postid TEXT,name TEXT,description TEXT);');
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS kuaidi(id integer primary key AutoIncrement,postid TEXT,name TEXT,description TEXT,posttime TEXT);');
 
                 });
+    if(!checkColumnExists("posttime")){
+        updateTable();
+    }
 }
 
 
@@ -27,9 +30,9 @@ var saveResult;
 function setKuaidi(postid, wuliutype,description) {
     var db = getDatabase();
     try{
-    db.transaction(function(tx) {
+        db.transaction(function(tx) {
 
-        var rs = tx.executeSql('INSERT OR REPLACE INTO kuaidi(postid,name,description) VALUES (?,?,?);', [postid,wuliutype,description]);
+            var rs = tx.executeSql('INSERT OR REPLACE INTO kuaidi(postid,name,description,time) VALUES (?,?,?);', [postid,wuliutype,description,getCurrentTime()]);
             if (rs.rowsAffected > 0) {
                 saveResult = "OK";
             } else {
@@ -39,10 +42,10 @@ function setKuaidi(postid, wuliutype,description) {
     catch(e){
         db.transaction(
                     function(tx) {
-                        tx.executeSql('ALTER TABLE kuaidi ADD description TEXT;');
+                        tx.executeSql('ALTER TABLE kuaidi ADD column time TEXT;');
 
                     });
-         saveResult = "Error";
+        saveResult = "Error";
     }
     return saveResult;
 
@@ -55,7 +58,7 @@ function clearKuaidi(id) {
     db.transaction(function(tx) {
         var rs = tx.executeSql('delete from kuaidi where id =?;',[id]);
         console.log("ID::::::"+id);
-         console.log(rs.rowsAffected);
+        console.log(rs.rowsAffected);
         if (rs.rowsAffected > 0) {
 
             res = "OK";
@@ -113,21 +116,28 @@ function getKuaidi(all) {
     var db = getDatabase();
     var res="";
     listModel.clear()
-    db.transaction(function(tx) {
-        var rs = tx.executeSql(sql);
-        if (rs.rows.length > 0) {
-            for(var i = 0; i < rs.rows.length; i++){
-                listModel.append({
-                                     "id":rs.rows.item(i).id,
-                                     "postid":rs.rows.item(i).postid,
-                                     "name":dictnames(rs.rows.item(i).name),
-                                     "description":rs.rows.item(i).description
+    try{
+        db.transaction(function(tx) {
+            var rs = tx.executeSql(sql);
+            if (rs.rows.length > 0) {
+                for(var i = 0; i < rs.rows.length; i++){
+                    listModel.append({
+                                         "id":rs.rows.item(i).id,
+                                         "postid":rs.rows.item(i).postid,
+                                         "name":dictnames(rs.rows.item(i).name),
+                                         "description":rs.rows.item(i).description,
+                                         "posttime":rs.rows.item(i).posttime
 
-                                 }
-                                 )
+                                     })
+                }
             }
-        }
-    });
+        })}
+    catch(e){
+        console.log("error...reget")
+
+        //getKuaidi(all);
+
+    }
 }
 
 var description;
@@ -169,15 +179,12 @@ function isExist(postid) {
         var rs = tx.executeSql("SELECT count(1) as count FROM kuaidi where postid = ?",[postid.toString()]);
         //console.log("COUNT:"+rs.rows.item(0).count);
         if (rs.rows.item(0).count > 0) {
-              exist = "true";
+            exist = "true";
         } else {
             exist = "false";
         }
 
     });
-
-
-
     return exist;
 
 }
@@ -214,6 +221,7 @@ function load(type,postid) {
 
 function loaded(jsonObject){
     var alltext="<br>";
+    var tmptext="<br>"
     if(jsonObject.status != "200" ){
         alltext = jsonObject.message;
 
@@ -223,16 +231,17 @@ function loaded(jsonObject){
             //最近物流根据主题高亮
             if( process == 0 ){
 
-                    alltext += "<font color='"+themeColor+"'>"+jsonObject.data[process].time+"</font><br><font color='"+themeColor+"'>"+jsonObject.data[process].context+"</font>"+"<br><br>"
-                }else{
+                tmptext = jsonObject.data[process].time+"<br>"+jsonObject.data[process].context;
+            }else{
 
-                    alltext += jsonObject.data[process].time+"<br>"+jsonObject.data[process].context+"<br><br>";
-                }
+                alltext += jsonObject.data[process].time+"<br>"+jsonObject.data[process].context+"<br><br>";
+            }
         }
 
     }
     progress.visible = false;
     postinfo = alltext;
+    highlightedpostinfo = tmptext;
     //return alltext;
 }
 
@@ -252,4 +261,34 @@ function dictnames(name){
         return "error"
     }
 
+}
+
+// 修改表结构
+function updateTable() {
+    var db = getDatabase();
+    db.transaction(function(tx) {
+        var rs = tx.executeSql('ALTER TABLE kuaidi ADD column posttime TEXT;');
+    });
+    db.transaction(function(tx) {
+        var rs = tx.executeSql('update kuaidi set posttime = " ";');
+    });
+
+}
+
+function checkColumnExists(columnName){
+    var flag = "true";
+    try{
+        var db = getDatabase();
+        db.transaction(function(tx) {
+          var rs =  tx.executeSql("select * from sqlite_master where name= kuaidi and sql like '%?%'",[columnName]);
+            if (rs.rows.item(0).count > 0) {
+                flag = "true";
+            } else {
+               flag = "false";
+            }
+        });
+    }catch(e){
+
+    }
+    return flag;
 }

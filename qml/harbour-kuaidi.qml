@@ -34,6 +34,8 @@ import "pages"
 import "pages/storage.js" as ST
 ApplicationWindow{
     id:window
+    property int mystep: 0//用户操作步骤
+    property var coverpostid
     allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
     initialPage: Component { FirstPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")

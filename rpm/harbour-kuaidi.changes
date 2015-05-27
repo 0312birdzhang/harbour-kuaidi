@@ -8,6 +8,11 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Thu May 27 2016 birdzhang <0312birdzhang@gmail.com> 1.0.1
+-[add]历史记录添加时间显示，再次添加新的将会显示
+
+-[add]Cover页面在点击历史记录的是会显示当前快递最新的一条
+
 * Sat Apr 29 2016 birdzhang <0312birdzhang@gmail.com> 0.9.1
 -[add]添加编辑备注，添加屏幕自动旋转，添加历史记录显示备注等
 

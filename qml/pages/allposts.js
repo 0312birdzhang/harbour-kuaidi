@@ -129,3 +129,11 @@ function getRandom(){
 
     return Num;
 }
+
+function getCurrentTime(){
+    var d = new Date();
+    var year = d.getFullYear();
+    var mon = d.getMonth()+1;
+    var day=d.getDate();
+    return year+"-"+mon+"-"+day
+}

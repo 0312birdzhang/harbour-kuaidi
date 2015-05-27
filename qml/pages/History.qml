@@ -35,9 +35,15 @@ Page{
     allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
 
     Component.onCompleted: {
-            ST.initialize()
-            ST.getKuaidi("all")
+            ST.initialize();
+            ST.getKuaidi("all");
+            mystep = 0;
         }
+    onStatusChanged: {
+        if (status == PageStatus.Active) {
+            mystep =0;
+        }
+    }
     //onOrientationChanged: ST.getKuaidi("all")
 
         ListModel {  id:listModel }
@@ -76,7 +82,13 @@ Page{
                         Label{
                             id:postinfo
                             width: parent.width-Theme.paddingLarge
-                            text:name+":"+postid
+                            text:{
+                                if(posttime.length > 2){
+                                    return name+":"+postid+","+posttime
+                                }else{
+                                    return name+":"+postid
+                                }
+                            }
                             color: Theme.highlightColor
                             font.pixelSize: Theme.fontSizeTiny
                             font.italic :true

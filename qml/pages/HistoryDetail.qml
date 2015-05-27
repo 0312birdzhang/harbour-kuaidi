@@ -39,13 +39,22 @@ Page{
 
     property var description
     property var postinfo:""
+    property var highlightedpostinfo: ""
     property int operationType: PageStackAction.Animated
     allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
         Component.onCompleted: {
             ST.themeColor =  Theme.highlightColor;
             description = ST.getKuaidiInfo(id);
+            mystep = 1;
+            coverpostid=id;
 
         }
+        onStatusChanged: {
+            if (status == PageStatus.Active) {
+                mystep =1;
+            }
+        }
+
         BusyIndicator {
                   id:progress
                   running: true
@@ -57,7 +66,9 @@ Page{
         SilicaFlickable{
             id:view
             anchors.fill: parent
-            contentHeight: header.height+descLabel.height+desc.height+postLabel.height+postinfoLabel.height + Theme.paddingLarge
+            contentHeight: header.height+descLabel.height+desc.height
+                           +postLabel.height+postinfoLabel.height
+                           +highlightLabel.height+ Theme.paddingLarge
 
             PageHeader {
                 id:header
@@ -132,11 +143,25 @@ Page{
                 }
             }
             Label{
-                id:postinfoLabel
+                id:highlightLabel
                 anchors{
                     left:parent.left
                     right:parent.right
                     top:postLabel.bottom
+                    margins: Theme.paddingLarge
+                }
+
+                wrapMode: Text.WordWrap
+                width: parent.width
+                text: highlightedpostinfo
+                color: Theme.highlightColor
+            }
+            Label{
+                id:postinfoLabel
+                anchors{
+                    left:parent.left
+                    right:parent.right
+                    top:highlightLabel.bottom
                     margins: Theme.paddingLarge
                 }
 

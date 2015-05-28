@@ -68,7 +68,7 @@ Page{
             anchors.fill: parent
             contentHeight: header.height+descLabel.height+desc.height
                            +postLabel.height+postinfoLabel.height
-                           +highlightLabel.height+ Theme.paddingLarge
+                           +highlightLabel.height+ Theme.paddingLarge*2
 
             PageHeader {
                 id:header

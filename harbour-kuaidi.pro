@@ -14,6 +14,8 @@ TARGET = harbour-kuaidi
 
 CONFIG += sailfishapp
 
+QT += dbus
+
 SOURCES += src/harbour-kuaidi.cpp
 
 OTHER_FILES += qml/harbour-kuaidi.qml \
@@ -26,7 +28,6 @@ OTHER_FILES += qml/harbour-kuaidi.qml \
     translations/*.ts \
     harbour-kuaidi.desktop \
     rpm/harbour-kuaidi.changes \
-    qml/pages/Notification.qml \
     qml/pages/notifactionbar.png \
     qml/pages/allposts.js
 

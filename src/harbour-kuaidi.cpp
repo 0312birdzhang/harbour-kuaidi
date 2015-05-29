@@ -33,6 +33,7 @@
 #endif
 
 #include <sailfishapp.h>
+#include <QtQml>
 
 
 int main(int argc, char *argv[])

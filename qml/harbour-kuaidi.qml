@@ -30,6 +30,9 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import org.nemomobile.notifications 1.0
+import org.nemomobile.systemsettings 1.0
+import org.nemomobile.dbus 1.0
 import "pages"
 import "pages/storage.js" as ST
 ApplicationWindow{
@@ -62,14 +65,21 @@ ApplicationWindow{
             move: Transition { NumberAnimation { properties: "y" } }
         }
     }
-
+    Notification {
+        id: notification
+        category: "x-sailfish.sailfish-utilities.error"
+    }
     function addNotification(inText, inTime) {
-        var text = inText == undefined ? "" : inText
-        var time = inTime == undefined ? 4 : inTime
-        var noti = Qt.createComponent("pages/Notification.qml")
-        if (noti.status == Component.Ready) {
-            var notiItem = noti.createObject(notificationBar, { "text": text, "time": time })
-        }
+        actionIsDone("info",inText)
+    }
+	function actionIsDone(category, message) {
+        console.log("Notify", message);
+        notification.category = (category === "error")
+            ? "x-sailfish.sailfish-utilities.error"
+            : "x-sailfish.sailfish-utilities.info";
+        notification.previewBody = "我的快递";
+        notification.previewSummary = message;
+        notification.publish();
     }
 
 }

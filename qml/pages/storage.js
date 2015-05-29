@@ -19,7 +19,7 @@ function initialize() {
                     tx.executeSql('CREATE TABLE IF NOT EXISTS kuaidi(id integer primary key AutoIncrement,postid TEXT,name TEXT,description TEXT,posttime TEXT);');
 
                 });
-    if(!checkColumnExists("posttime")){
+    if(checkColumnExists("posttime") == "false"){
         updateTable();
     }
 }
@@ -32,7 +32,7 @@ function setKuaidi(postid, wuliutype,description) {
     try{
         db.transaction(function(tx) {
 
-            var rs = tx.executeSql('INSERT OR REPLACE INTO kuaidi(postid,name,description,time) VALUES (?,?,?);', [postid,wuliutype,description,getCurrentTime()]);
+            var rs = tx.executeSql('INSERT OR REPLACE INTO kuaidi(postid,name,description,posttime) VALUES (?,?,?,?);', [postid,wuliutype,description,getCurrentTime()]);
             if (rs.rowsAffected > 0) {
                 saveResult = "OK";
             } else {
@@ -42,7 +42,7 @@ function setKuaidi(postid, wuliutype,description) {
     catch(e){
         db.transaction(
                     function(tx) {
-                        tx.executeSql('ALTER TABLE kuaidi ADD column time TEXT;');
+                        tx.executeSql('ALTER TABLE kuaidi ADD column posttime TEXT;');
 
                     });
         saveResult = "Error";
@@ -135,7 +135,7 @@ function getKuaidi(all) {
     catch(e){
         console.log("error...reget")
 
-        //getKuaidi(all);
+
 
     }
 }
@@ -280,7 +280,7 @@ function checkColumnExists(columnName){
     try{
         var db = getDatabase();
         db.transaction(function(tx) {
-          var rs =  tx.executeSql("select * from sqlite_master where name= kuaidi and sql like '%?%'",[columnName]);
+          var rs =  tx.executeSql("select * from sqlite_master where name = 'kuaidi' and sql like '%?%'",[columnName]);
             if (rs.rows.item(0).count > 0) {
                 flag = "true";
             } else {

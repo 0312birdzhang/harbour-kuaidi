@@ -58,7 +58,7 @@ CoverBackground {
     onStatusChanged: {
         if (status == PageStatus.Active ) {
             if(listModel.count > 0 && mystep == 0){
-
+                ST.getKuaidi("three");
             }else if(description.length == 0){
                 howLoad();
             }else if(tmpid != coverpostid){
@@ -67,19 +67,6 @@ CoverBackground {
 
             else{
                 console.log("do nothing")
-            }
-        }
-    }
-
-    CoverActionList {
-        id: refreshCoverAction
-        enabled:mystep == 1
-        CoverAction {
-            property bool next: true
-            iconSource:  "image://theme/icon-cover-refresh"
-            onTriggered: {
-                ST.themeColor =  Theme.highlightColor;
-                description = ST.getKuaidiInfo(coverpostid);
             }
         }
     }
@@ -93,6 +80,19 @@ CoverBackground {
     }
     ListModel {  id:listModel }
 
+    CoverActionList {
+        id: refreshCoverAction
+
+        enabled: mystep == 1
+
+        CoverAction {
+            iconSource: "image://theme/icon-cover-refresh"
+            onTriggered: {
+                ST.themeColor =  Theme.highlightColor;
+                description = ST.getKuaidiInfo(coverpostid);
+            }
+        }
+    }
     SilicaListView {
         id:view
         visible: listModel.count>0 && mystep == 0
@@ -122,7 +122,7 @@ CoverBackground {
             id:desc
             wrapMode: Text.WordWrap
             width: parent.width
-            text:description
+            text:"备注:"+description
             font.pixelSize: Theme.fontSizeMedium
             color:  Theme.highlightColor
             anchors{
@@ -145,7 +145,7 @@ CoverBackground {
 
             wrapMode: Text.WordWrap
             width: parent.width
-            text: highlightedpostinfo
+            text: highlightedpostinfo.length > 4?highlightedpostinfo:"暂未查询到最新记录，请稍后重试O(∩_∩)O"
             font.pixelSize: Theme.fontSizeExtraSmall
             color: cover.highlighted ? Theme.highlightColor : Theme.primaryColor
         }

@@ -83,8 +83,8 @@ Page{
                             id:postinfo
                             width: parent.width-Theme.paddingLarge
                             text:{
-                                if(posttime.length > 2){
-                                    return name+":"+postid+","+posttime
+                                if(posttime&&posttime.length >2){
+                                    return name+":"+postid+",保存时间:"+posttime
                                 }else{
                                     return name+":"+postid
                                 }

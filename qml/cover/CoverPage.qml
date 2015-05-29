@@ -71,6 +71,19 @@ CoverBackground {
         }
     }
 
+    CoverActionList {
+        id: refreshCoverAction
+        enabled:mystep == 1
+        CoverAction {
+            property bool next: true
+            iconSource:  "image://theme/icon-cover-refresh"
+            onTriggered: {
+                ST.themeColor =  Theme.highlightColor;
+                description = ST.getKuaidiInfo(coverpostid);
+            }
+        }
+    }
+
     BusyIndicator {
         id:progress
         running: false

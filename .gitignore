@@ -4,3 +4,7 @@
 *.pyc
 *.pyo
 *.db
+*.o
+*.cpp
+*.list
+Makefile

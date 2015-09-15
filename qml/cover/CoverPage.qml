@@ -66,7 +66,7 @@ CoverBackground {
             }
 
             else{
-                console.log("do nothing")
+                //console.log("do nothing")
             }
         }
     }
@@ -154,23 +154,26 @@ CoverBackground {
 
     }
 
-    Image{
-        id:logo
-        visible: listModel.count>0 && mystep == 0
-        fillMode: Image.Stretch;
-        source:"../harbour-kuaidi.png"
-        anchors.centerIn: parent
-        anchors.topMargin: Theme.paddingLarge*2
+    CoverPlaceholder{
+      icon.source:"../harbour-kuaidi.png"
+      text:"我的快递"
+      visible: (listModel.count>0 && mystep == 0 )|| listModel.count == 0
     }
-    Label{
-        visible: listModel.count>0 && mystep == 0
-        text:"我的快递"
-        anchors.top:logo.bottom
-        anchors.topMargin: Theme.paddingLarge
-        anchors.horizontalCenter: parent.horizontalCenter
-        //color: Theme.highlightColor
-    }
+    // Image{
+    //     id:logo
+    //     visible: (listModel.count>0 && mystep == 0 )|| listModel.count == 0
+    //     fillMode: Image.Stretch;
+    //     source:"../harbour-kuaidi.png"
+    //     anchors.centerIn: parent
+    //     anchors.topMargin: Theme.paddingLarge*2
+    // }
+    // Label{
+    //     visible:  (listModel.count>0 && mystep == 0 )|| listModel.count == 0
+    //     text:"我的快递"
+    //     anchors.top:logo.bottom
+    //     anchors.topMargin: Theme.paddingLarge
+    //     anchors.horizontalCenter: parent.horizontalCenter
+    //     //color: Theme.highlightColor
+    // }
 
 }
-
-

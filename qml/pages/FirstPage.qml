@@ -85,8 +85,8 @@ Page {
             }
             Rectangle{
                 id:rectangle
-                width: parent.width - Theme.paddingLarge *2
-                height: input.height + Theme.paddingMedium*2
+                width: parent.width - Theme.paddingLarge
+                height: input.height + Theme.paddingLarge * 2
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 border.color:Theme.highlightColor
@@ -191,6 +191,3 @@ Page {
     }
 
 }
-
-
-

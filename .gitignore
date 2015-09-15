@@ -1,2 +1,6 @@
 *.user*
 *.user
+*~
+*.pyc
+*.pyo
+*.db

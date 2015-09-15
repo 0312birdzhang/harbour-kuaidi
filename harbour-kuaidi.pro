@@ -16,6 +16,8 @@ CONFIG += sailfishapp
 
 QT += dbus
 
+include(notifications/notification.pri)
+
 SOURCES += src/harbour-kuaidi.cpp
 
 OTHER_FILES += qml/harbour-kuaidi.qml \

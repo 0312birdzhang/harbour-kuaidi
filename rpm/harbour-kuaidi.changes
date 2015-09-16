@@ -7,6 +7,8 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
+* Fri May 28 2016 birdzhang <0312birdzhang@gmail.com> 1.0.2
+-[fix]修复数据库字段修改bug
 
 * Thu May 27 2016 birdzhang <0312birdzhang@gmail.com> 1.0.1
 -[add]历史记录添加时间显示，再次添加新的将会显示

@@ -105,7 +105,7 @@ Page {
                     leftMargin: Theme.paddingLarge
                 }
                 color: Theme.primaryColor
-                 font.pixelSize: Theme.fontSizeSmall
+                font.pixelSize: Theme.fontSizeSmall
                 width: parent.width - (2 * Theme.paddingLarge)
                 wrapMode: Text.Wrap
                 text: "感谢www.kuaidi100.com的免费接口"

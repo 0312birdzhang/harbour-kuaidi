@@ -62,7 +62,7 @@ Page{
             delegate:ListItem {
                             menu: contextMenuComponent
                             function remove(id) {
-                                remorseAction("正在删除...", function() {
+                                remorseAction("正在删除", function() {
                                     listModel.remove(index);
                                     ST.clearKuaidi(id);
                                 })
@@ -227,3 +227,4 @@ Page{
             font.pixelSize: Theme.fontSizeExtraLarge
         }
 }
+

@@ -7,32 +7,36 @@
 
 # * date Author's Name <author's email> version-release
 # - Summary of changes
-* Fri May 28 2016 birdzhang <0312birdzhang@gmail.com> 1.0.2
+
+* Fri Oct 2 2015 birdzhang <0312birdzhang@gmail.com> 1.1.1
+-解决2.0消息通知只显示一次的bug
+
+* Fri May 28 2015 birdzhang <0312birdzhang@gmail.com> 1.0.2
 -[fix]修复数据库字段修改bug
 
-* Thu May 27 2016 birdzhang <0312birdzhang@gmail.com> 1.0.1
+* Thu May 27 2015 birdzhang <0312birdzhang@gmail.com> 1.0.1
 -[add]历史记录添加时间显示，再次添加新的将会显示
 
 -[add]Cover页面在点击历史记录的是会显示当前快递最新的一条
 
-* Sat Apr 29 2016 birdzhang <0312birdzhang@gmail.com> 0.9.1
+* Sat Apr 29 2015 birdzhang <0312birdzhang@gmail.com> 0.9.1
 -[add]添加编辑备注，添加屏幕自动旋转，添加历史记录显示备注等
 
-* Sat Apr 18 2016 birdzhang <0312birdzhang@gmail.com> 0.8.2
+* Sat Apr 18 2015 birdzhang <0312birdzhang@gmail.com> 0.8.2
 -[modify]根据快递商自动更改输入单号的输入法，由于太多，只做了常用了的快递商
 
-* Sat Apr 18 2016 birdzhang <0312birdzhang@gmail.com> 0.8.1
+* Sat Apr 18 2015 birdzhang <0312birdzhang@gmail.com> 0.8.1
 -[add]添加所有的快递商，应该不会找不到了
 
-* Fri Mar 28 2016 birdzhang <0312birdzhang@gmail.com> 0.7.1
+* Fri Mar 28 2015 birdzhang <0312birdzhang@gmail.com> 0.7.1
 -[fix]修复物流信息不能滑动的bug
 -[add]添加保存消息提示
 -[modify]修改备注输入框样式
 
-* Thu Mar 26 2016 birdzhang <0312birdzhang@gmail.com> 0.6.1
+* Thu Mar 26 2015 birdzhang <0312birdzhang@gmail.com> 0.6.1
 -[fix]修复连续保存出现已经保存过的bug
 -[add]添加备注功能,首次使用会无法保存，再保存一次即可.
 
-* Thu Mar 26 2016 birdzhang <0312birdzhang@gmail.com> 0.5.1
+* Thu Mar 26 2015 birdzhang <0312birdzhang@gmail.com> 0.5.1
 -在卡片页面添加最近的查询记录
 

@@ -35,10 +35,10 @@ Page{
     allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
 
     Component.onCompleted: {
-            ST.initialize();
-            ST.getKuaidi("all");
-            mystep = 0;
-        }
+        ST.initialize();
+        ST.getKuaidi("all");
+        mystep = 0;
+    }
     onStatusChanged: {
         if (status == PageStatus.Active) {
             mystep =0;
@@ -46,95 +46,97 @@ Page{
     }
     //onOrientationChanged: ST.getKuaidi("all")
 
-        ListModel {  id:listModel }
+    ListModel {  id:listModel }
 
-        SilicaListView {
-            id:view
-            anchors.fill:parent
-            visible: listModel.count > 0
-            header:PageHeader {
-                id:header
-                title: "查询历史"
+    SilicaListView {
+        id:view
+        anchors.fill:parent
+        //visible: listModel.count > 0
+        header:PageHeader {
+            id:header
+            title: "查询历史"
+        }
+        width:parent.width
+        model : listModel
+        clip: true
+        delegate:ListItem {
+            menu: contextMenuComponent
+            function remove(id) {
+                remorseAction("正在删除", function() {
+                    listModel.remove(index);
+                    ST.clearKuaidi(id);
+                })
             }
-            width:parent.width
-            model : listModel
-            clip: true
-            delegate:ListItem {
-                            menu: contextMenuComponent
-                            function remove(id) {
-                                remorseAction("正在删除", function() {
-                                    listModel.remove(index);
-                                    ST.clearKuaidi(id);
-                                })
-                            }
 
-                        ListView.onRemove: animateRemoval()
-                        Label{
-                           id:showprocess
-                           wrapMode: Text.WordWrap
-                           x:Theme.paddingLarge
-                           maximumLineCount:1
-                           truncationMode: TruncationMode.Fade
-                           width: parent.width-Theme.paddingLarge *2
-                           text: (model.index+1) + ". "+description
-                           color: view.highlighted ? Theme.highlightColor : Theme.primaryColor
-                        }
-                        Label{
-                            id:postinfo
-                            width: parent.width-Theme.paddingLarge
-                            text:{
-                                if(posttime&&posttime.length >2){
-                                    return name+":"+postid+",保存时间:"+posttime
-                                }else{
-                                    return name+":"+postid
-                                }
-                            }
-                            color: Theme.highlightColor
-                            font.pixelSize: Theme.fontSizeTiny
-                            font.italic :true
-                            anchors{
-                                top:showprocess.bottom
-                                left:parent.left
-                                right:parent.right
-                                leftMargin: Theme.paddingLarge*2
-                            }
-                        }
+            ListView.onRemove: animateRemoval()
+            Label{
+                id:showprocess
+                wrapMode: Text.WordWrap
+                x:Theme.paddingLarge
+                maximumLineCount:1
+                truncationMode: TruncationMode.Fade
+                width: parent.width-Theme.paddingLarge *2
+                text: (model.index+1) + ". "+description
+                color: view.highlighted ? Theme.highlightColor : Theme.primaryColor
+            }
+            Label{
+                id:postinfo
+                width: parent.width-Theme.paddingLarge
+                text:{
+                    if(posttime&&posttime.length >2){
+                        return name+":"+postid+",保存时间:"+posttime
+                    }else{
+                        return name+":"+postid
+                    }
+                }
+                color: Theme.highlightColor
+                font.pixelSize: Theme.fontSizeTiny
+                font.italic :true
+                anchors{
+                    top:showprocess.bottom
+                    left:parent.left
+                    right:parent.right
+                    leftMargin: Theme.paddingLarge*2
+                }
+            }
 
-                        Component {
-                            id: contextMenuComponent
-                            ContextMenu {
-                                id:contextMenu
-                                MenuItem {
-                                    text: "编辑"
-                                    onClicked: {
-                                        pageStack.push(updatePage,{"id":id,"postid":postid,"description":description})
-                                    }
-                                }
-                                MenuItem {
-                                    text: "删除"
-                                    onClicked: remove(id)
-                                }
-                            }
-                        }
+            Component {
+                id: contextMenuComponent
+                ContextMenu {
+                    id:contextMenu
+                    MenuItem {
+                        text: "编辑"
                         onClicked: {
-                            pageStack.push(Qt.resolvedUrl("HistoryDetail.qml"),
-                                                { "id":id,
-                                               "wuliutype":name,
-                                               "postid":postid
-                                                    })
+                            pageStack.push(updatePage,{"id":id,"postid":postid,"description":description})
+                        }
+                    }
+                    MenuItem {
+                        text: "删除"
+                        onClicked: remove(id)
+                    }
+                }
+            }
+            onClicked: {
+                pageStack.push(Qt.resolvedUrl("HistoryDetail.qml"),
+                               { "id":id,
+                                   "wuliutype":name,
+                                   "postid":postid
+                               })
 
-                       }
+            }
+        }
+        VerticalScrollDecorator {}
 
-
-                   VerticalScrollDecorator {}
-
+        ViewPlaceholder{
+            //id:nohistory
+            enabled: view.count == 0// && !PageStatus.Active
+            text:"暂无历史记录"
         }
 
 
-
     }
-     Component {
-            id: updatePage
+    Component {
+        id: updatePage
         Dialog {
             id:editDialog
             property var id :""
@@ -155,7 +157,7 @@ Page{
                 }
             }
 
-           SilicaFlickable {
+            SilicaFlickable {
 
                 width: parent.width
                 height: parent.height
@@ -219,12 +221,6 @@ Page{
             }
         }
     }
-        Label{
-            id:nohistory
-            visible: listModel.count===0
-            text:"暂无历史记录"
-            anchors.centerIn: parent
-            font.pixelSize: Theme.fontSizeExtraLarge
-        }
+
 }
 

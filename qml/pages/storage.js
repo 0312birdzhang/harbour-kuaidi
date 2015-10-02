@@ -57,8 +57,8 @@ function clearKuaidi(id) {
     var res = "";
     db.transaction(function(tx) {
         var rs = tx.executeSql('delete from kuaidi where id =?;',[id]);
-        console.log("ID::::::"+id);
-        console.log(rs.rowsAffected);
+        //console.log("ID::::::"+id);
+        //console.log(rs.rowsAffected);
         if (rs.rowsAffected > 0) {
 
             res = "OK";

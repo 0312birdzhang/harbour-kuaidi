@@ -32,7 +32,10 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "pages"
 import "pages/storage.js" as ST
-ApplicationWindow{
+import org.nemomobile.notifications 1.0
+
+ApplicationWindow
+{
     id:window
     property int mystep: 0//用户操作步骤
     property var coverpostid
@@ -43,35 +46,18 @@ ApplicationWindow{
     Component.onCompleted: {
         ST.initialize();
     }
-
-    Item{
-        id:notiItem
-        width: parent.width
-        height:Screen.height/5
-        z: 20
-        Column {
-            id: notificationBar
-            anchors {
-                top:parent.top
-                left: parent.left
-                right: parent.right
-                bottom: parent.bottom
-                margins:Theme.paddingMedium
-            }
-            spacing: Theme.paddingMedium
-            move: Transition { NumberAnimation { properties: "y" } }
-        }
+    Notification{
+        id:notification
+        appName: "CnBeta"
     }
 
-    function addNotification(inText, inTime) {
-        var text = inText == undefined ? "" : inText
-        var time = inTime == undefined ? 4 : inTime
-        var noti = Qt.createComponent("pages/Notification.qml")
-        if (noti.status == Component.Ready) {
-            var notiItem = noti.createObject(notificationBar, { "text": text, "time": time })
-        }
-    }
 
+    function addNotification(message) {
+        notification.previewBody = "我的快递";
+        notification.previewSummary = message;
+        notification.close();
+        notification.publish();
+    }
 }
 
 

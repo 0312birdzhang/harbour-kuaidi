@@ -21,15 +21,18 @@ SOURCES += src/harbour-kuaidi.cpp
 OTHER_FILES += qml/harbour-kuaidi.qml \
     qml/cover/CoverPage.qml \
     qml/pages/FirstPage.qml \
-    qml/pages/*.qml \
     qml/pages/*.js\
     rpm/harbour-kuaidi.spec \
     rpm/harbour-kuaidi.yaml \
     translations/*.ts \
     harbour-kuaidi.desktop \
     rpm/harbour-kuaidi.changes \
-    qml/pages/notifactionbar.png \
-    qml/pages/allposts.js
+    qml/pages/allposts.js \
+    qml/pages/About.qml \
+    qml/pages/EditPage.qml \
+    qml/pages/History.qml \
+    qml/pages/HistoryDetail.qml \
+    qml/pages/ShowPage.qml
 
 
 # to disable building translations every time, comment out the

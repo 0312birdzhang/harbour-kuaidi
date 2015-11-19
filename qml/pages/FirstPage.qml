@@ -92,7 +92,7 @@ Page {
                     Rectangle{
                         id:rectangle
                         width: parent.width - Theme.paddingLarge
-                        height: input.height + Theme.paddingLarge * 2
+                        height: input.height + Theme.paddingLarge * 3
                         anchors.horizontalCenter: parent.horizontalCenter
 
                         border.color:Theme.highlightColor
@@ -121,7 +121,7 @@ Page {
                                     spacing: Theme.paddingLarge
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     Button {
-                                        text: "Next"
+                                        text: "查询"
                                         onClicked: {
                                             postid.focus=false;
                                             if(postid.text&&postid.text.length>2){

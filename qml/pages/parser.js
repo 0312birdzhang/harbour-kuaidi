@@ -46,7 +46,6 @@ function loadPostname(oritxt){
     var obj=JSON.parse(oritxt);
     autopostModel.clear();
     for(var i in obj){
-        console.log(i)
         autopostModel.append({
                               "value":obj[i].comCode,
                               "label":getLabel(obj[i].comCode)

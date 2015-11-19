@@ -6,12 +6,26 @@ import "./allposts.js" as Posts
 Page{
     id:secondWizardPage
     property string postid
+    property int modelCount: view.count
     allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
+
+    onModelCountChanged: {
+        if(view.count == 1){
+            pageStack.push(Qt.resolvedUrl("ShowPage.qml"),
+                         {
+                             "wuliutype":autopostModel.get(0).value,
+                             "postid":postid,
+                             "wuliuming":autopostModel.get(0).label
+                         })
+        }
+    }
 
     Component.onCompleted: {
         JS.autopostModel = autopostModel
         JS.getPostname(postid)
+
     }
+
 
     ListModel {  id:autopostModel }
 
@@ -26,20 +40,16 @@ Page{
         model : autopostModel
         clip: true
         delegate:ListItem {
-
-
-            ListView.onRemove: animateRemoval()
             Label{
                 id:showprocess
                 wrapMode: Text.WordWrap
                 x:Theme.paddingLarge
-                maximumLineCount:1
+                maximumLineCount:2
                 truncationMode: TruncationMode.Fade
                 width: parent.width-Theme.paddingLarge *2
                 text: (model.index+1) + ". "+label
                 color: view.highlighted ? Theme.highlightColor : Theme.primaryColor
             }
-
             onClicked: {
                 pageStack.push(Qt.resolvedUrl("ShowPage.qml"),
                                {
@@ -47,8 +57,7 @@ Page{
                                    "postid":postid,
                                    "wuliuming":label
                                })
-
-            }
+                    }
         }
         VerticalScrollDecorator {}
 

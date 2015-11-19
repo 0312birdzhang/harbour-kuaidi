@@ -771,3 +771,11 @@ function getCurrentTime(){
     var day=d.getDate();
     return year+"-"+mon+"-"+day
 }
+
+function getLabel(postname){
+  for ( var i in allpost   ){
+      if(postname == allpost[i].value){
+        return allpost[i].label
+      }
+  }
+}

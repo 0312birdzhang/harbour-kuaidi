@@ -1,6 +1,60 @@
 Qt.include("allposts.js");
 var themeColor;
 
+function sendWebRequest(url, callback, method, postdata) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+                switch(xmlhttp.readyState) {
+                case xmlhttp.OPENED:break;
+                case xmlhttp.HEADERS_RECEIVED:
+                  if (xmlhttp.status != 200){
+                    }
+                  break;
+                case xmlhttp.DONE:if (xmlhttp.status == 200) {
+                        try {
+                            //console.log("Server Msg:"+xmlhttp.responseXML);
+                            callback(xmlhttp.responseText);
+                            //signalcenter.loadFinished();
+                        } catch(e) {
+                            //signalcenter.loadFailed(qsTr("loading erro..."));
+                        }
+                    } else {
+                        //signalcenter.loadFailed("");
+                    }
+                    break;
+                }
+            }
+    if(method==="GET") {
+        xmlhttp.open("GET",url);
+        xmlhttp.send();
+    }
+    if(method==="POST") {
+        xmlhttp.open("POST",url);
+        xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xmlhttp.setRequestHeader("Content-Length", postdata.length);
+        xmlhttp.send(postdata);
+    }
+}
+
+var autopostModel;
+function getPostname(postnum){
+    var url="http://m.kuaidi100.com/autonumber/auto?num="+postnum;
+    sendWebRequest(url,loadPostname,"GET","");
+}
+
+function loadPostname(oritxt){
+    var obj=JSON.parse(oritxt);
+    autopostModel.clear();
+    for(var i in obj){
+        console.log(i)
+        autopostModel.append({
+                              "value":obj[i].comCode,
+                              "label":getLabel(obj[i].comCode)
+                            });
+    }
+}
+
+
 //查询快递
 function load(type,postid) {
     progress.visible = true;
@@ -60,14 +114,8 @@ function loaded(jsonObject)
 
                              });
 				}
-            
+
         }
     }
         progress.visible = false;
 }
-
-
-
-
-
-

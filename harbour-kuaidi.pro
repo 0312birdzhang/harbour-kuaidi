@@ -40,3 +40,6 @@ OTHER_FILES += qml/harbour-kuaidi.qml \
 CONFIG += sailfishapp_i18n
 TRANSLATIONS += translations/harbour-kuaidi-de.ts
 
+DISTFILES += \
+    qml/pages/AutoPostNamePage.qml
+

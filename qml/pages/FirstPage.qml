@@ -57,137 +57,94 @@ Page {
         function update(){
         }
     }
-
-    SilicaFlickable {
-        anchors.fill: parent
-        PullDownMenu {
-            MenuItem {
-                text: "关于"
-                onClicked: pageStack.push(Qt.resolvedUrl("About.qml"))
-            }
-        }
-        contentHeight: column.height
-
-        MouseArea{
-            anchors.fill: parent;
-            onClicked: {
-                postid.focus=false;
-            }
-        }
-
-        Column {
-            id: column
-            x:orientationLockCombo.x
-            width: parent.width
-            spacing: Theme.paddingLarge
-            PageHeader {
-                title: "我的快递"
-            }
-            Rectangle{
-                id:rectangle
-                width: parent.width - Theme.paddingLarge
-                height: input.height + Theme.paddingLarge * 2
-                anchors.horizontalCenter: parent.horizontalCenter
-
-                border.color:Theme.highlightColor
-                color:"#00000000"
-                radius: 30
-                Column {
-                    id:input
-                    anchors{
-                        top:rectangle.top
-                        topMargin: Theme.paddingMedium
+    ListModel{
+        id:autopostnames
+    }
+            SilicaFlickable {
+                anchors.fill: parent
+                PullDownMenu {
+                    MenuItem {
+                        text: "关于"
+                        onClicked: pageStack.push(Qt.resolvedUrl("About.qml"))
                     }
-                    width:parent.width
-                    spacing: Theme.paddingMedium
-                    ComboBox {
-                        id: orientationLockCombo
-                        width: parent.width
-                        label:"选择快递商"
-
-//                        SearchField {
-//                            id: searchField
-//                            width: parent.width/2
-//                            Binding {
-//                                target: orientationLockCombo
-//                                property: "searchString"
-//                                value: searchField.text.toLowerCase().trim()
-//                            }
-//                        }
-                        menu: ContextMenu {
-                            Repeater {
-                                model: postnames
-
-                                MenuItem {
-                                    text: label
-                                }
-                            }
-
-
-                        }
-                         onCurrentIndexChanged:{
-                             var currIndex = orientationLockCombo.currentIndex;
-                             if( currIndex == 1 ||currIndex ==  2||currIndex ==  4||currIndex ==  5||currIndex == 7||currIndex ==  8||currIndex == 9){
-                                 postid.inputMethodHints = Qt.ImhFormattedNumbersOnly
-                             }else{
-                                 postid.inputMethodHints = (Qt.ImhNoAutoUppercase | Qt.ImhUrlCharactersOnly | Qt.ImhNoPredictiveText)
-                             }
-                         }
-
-
+                    MenuItem{
+                        text:"历史记录"
+                        onClicked: pageStack.push(Qt.resolvedUrl("History.qml") )
                     }
-                    TextField {
-                        id:postid
-                        width:parent.width - Theme.paddingMedium
-                        height:implicitHeight
+                }
+                contentHeight: column.height
 
-                        inputMethodHints:Qt.ImhNoAutoUppercase | Qt.ImhUrlCharactersOnly | Qt.ImhNoPredictiveText
-
-                        echoMode: TextInput.Normal
-                        font.pixelSize: Theme.fontSizeMedium
-                        placeholderText: "请输入快递号"
-                        label: "快递号"
-                    }
-                    Row{
-                        id:buttons
-                        spacing: Theme.paddingLarge
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        Button {
-                            text: "查询"
-                            onClicked: {
-                                postid.focus=false;
-                                if(postid.text&&postid.text.length>2){
-                                    postid.placeholderText="请输入快递号";
-                                    pageStack.push(Qt.resolvedUrl("ShowPage.qml"),
-                                                   {
-
-                                                       "wuliutype":postnames.get(orientationLockCombo.currentIndex).value,
-
-                                                       "postid":postid.text,
-                                                       "wuliuming":orientationLockCombo.value
-                                                   });
-                                }
-                                else{
-                                    postid.placeholderColor="red";
-                                }
-                            }
-                        }
-                        Button {
-                            text: "历史记录"
-                            onClicked: {
-                                postid.focus=false;
-                                pageStack.push(Qt.resolvedUrl("History.qml") );
-                            }
-                        }
+                MouseArea{
+                    anchors.fill: parent;
+                    onClicked: {
+                        postid.focus=false;
                     }
                 }
 
+                Column {
+                    id: column
+
+                    width: parent.width
+                    spacing: Theme.paddingLarge
+                    PageHeader {
+                        title: "我的快递"
+                    }
+                    Rectangle{
+                        id:rectangle
+                        width: parent.width - Theme.paddingLarge
+                        height: input.height + Theme.paddingLarge * 2
+                        anchors.horizontalCenter: parent.horizontalCenter
+
+                        border.color:Theme.highlightColor
+                        color:"#00000000"
+                        radius: 30
+                        Column {
+                            id:input
+                            anchors{
+                                top:rectangle.top
+                                topMargin: Theme.paddingMedium
+                            }
+                            width:parent.width
+                            spacing: Theme.paddingMedium
+                            TextField {
+                                id:postid
+                                width:parent.width - Theme.paddingMedium
+                                height:implicitHeight
+                                inputMethodHints:Qt.ImhNoAutoUppercase | Qt.ImhUrlCharactersOnly | Qt.ImhNoPredictiveText
+                                echoMode: TextInput.Normal
+                                font.pixelSize: Theme.fontSizeMedium
+                                placeholderText: "请输入快递号"
+                                label: "快递号"
+                            }
+                            Row{
+                                    id:buttons
+                                    spacing: Theme.paddingLarge
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    Button {
+                                        text: "Next"
+                                        onClicked: {
+                                            postid.focus=false;
+                                            if(postid.text&&postid.text.length>2){
+                                                postid.placeholderText="请输入快递号";
+                                                pageStack.push(Qt.resolvedUrl("AutoPostNamePage.qml"),
+                                                               {
+                                                                   "postid":postid.text,
+                                                               });
+                                            }
+                                            else{
+                                                postid.placeholderColor="red";
+                                            }
+                                        }
+                                    }
+                                }
+                        }
+
+                    }
+
+
+                }
             }
 
 
-        }
-
-
-    }
 
 }

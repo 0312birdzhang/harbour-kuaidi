@@ -3,8 +3,6 @@ import Sailfish.Silica 1.0
 import "storage.js" as ST
 Page {
     id: updatePage
-
-
     allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
    Column{
        anchors.fill: parent

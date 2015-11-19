@@ -51,6 +51,7 @@ function loadPostname(oritxt){
                               "label":getLabel(obj[i].comCode)
                             });
     }
+
 }
 
 

@@ -163,7 +163,7 @@ Page {
                 font.pixelSize: Theme.fontSizeTiny
                 width: parent.width
                 wrapMode: Text.WordWrap
-                text:"v1.2 添加更多快递商<br/>"
+                text:"v1.2 添加自动根据单号过滤快递商<br/>"
                     +"v1.1 优化cover，更改消息通知<br/>"
                     +"v1.0 历史记录添加时间显示;covery页面变化显示<br/>"
                     +"v0.9 添加修改备注以及历史记录显示备注，添加屏幕旋转自适应<br/>"

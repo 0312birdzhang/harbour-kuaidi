@@ -67,10 +67,6 @@ Page {
                         text: "关于"
                         onClicked: pageStack.push(Qt.resolvedUrl("About.qml"))
                     }
-                    MenuItem{
-                        text:"历史记录"
-                        onClicked: pageStack.push(Qt.resolvedUrl("History.qml") )
-                    }
                 }
                 contentHeight: column.height
 
@@ -102,14 +98,14 @@ Page {
                             id:input
                             anchors{
                                 top:rectangle.top
-                                topMargin: Theme.paddingMedium
+                                topMargin: Theme.paddingLarge
                             }
                             width:parent.width
                             spacing: Theme.paddingMedium
                             TextField {
                                 id:postid
                                 width:parent.width - Theme.paddingMedium
-                                height:implicitHeight
+                                height:implicitHeight + Theme.paddingMedium
                                 inputMethodHints:Qt.ImhNoAutoUppercase | Qt.ImhUrlCharactersOnly | Qt.ImhNoPredictiveText
                                 echoMode: TextInput.Normal
                                 font.pixelSize: Theme.fontSizeMedium
@@ -117,26 +113,32 @@ Page {
                                 label: "快递号"
                             }
                             Row{
-                                    id:buttons
-                                    spacing: Theme.paddingLarge
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    Button {
-                                        text: "查询"
-                                        onClicked: {
-                                            postid.focus=false;
-                                            if(postid.text&&postid.text.length>2){
-                                                postid.placeholderText="请输入快递号";
-                                                pageStack.push(Qt.resolvedUrl("AutoPostNamePage.qml"),
-                                                               {
-                                                                   "postid":postid.text,
-                                                               });
-                                            }
-                                            else{
-                                                postid.placeholderColor="red";
-                                            }
+                                id:buttons
+                                spacing: Theme.paddingLarge
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                Button {
+                                    text: "查询"
+                                    onClicked: {
+                                        postid.focus=false;
+                                        if(postid.text&&postid.text.length>2){
+                                            postid.placeholderText="请输入快递号";
+                                            pageStack.push(Qt.resolvedUrl("AutoPostNamePage.qml"),
+                                                           {
+                                                               "postid":postid.text,
+                                                           });
+                                        }
+                                        else{
+                                            postid.placeholderColor="red";
                                         }
                                     }
                                 }
+                               Button{
+                                   text:"历史记录"
+                                   onClicked: {
+                                       pageStack.push(Qt.resolvedUrl("History.qml") )
+                                   }
+                               }
+                            }
                         }
 
                     }

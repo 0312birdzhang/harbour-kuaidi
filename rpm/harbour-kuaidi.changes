@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Thu Nov 19 2015 birdzhang <0312birdzhang@gmail.com> 1.2.1
+- 添加更多快递商
+
 * Fri Oct 2 2015 birdzhang <0312birdzhang@gmail.com> 1.1.1
 -解决2.0消息通知只显示一次的bug
 

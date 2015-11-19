@@ -277,7 +277,7 @@ function updateTable() {
 
 function checkColumnExists(columnName){
     var flag = "true";
-    var sql = 'select * from sqlite_master where name = "day" and sql like "%'+columnName+'%";';
+    var sql = 'select * from sqlite_master where name = "kuaidi" and sql like "%'+columnName+'%";';
     console.log("SQL:"+sql)
     try{
         var db = getDatabase();

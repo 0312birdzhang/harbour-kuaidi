@@ -277,18 +277,21 @@ function updateTable() {
 
 function checkColumnExists(columnName){
     var flag = "true";
+    var sql = 'select * from sqlite_master where name = "day" and sql like "%'+columnName+'%";';
+    console.log("SQL:"+sql)
     try{
         var db = getDatabase();
-        db.transaction(function(tx) {
-          var rs =  tx.executeSql("select * from sqlite_master where name = 'kuaidi' and sql like '%?%'",[columnName]);
-            if (rs.rows.item(0).count > 0) {
-                flag = "true";
-            } else {
+        db.transaction(function(tx){
+          var rs =  tx.executeSql(sql);
+            if(rs.rows.length > 0) {
+               flag = "true";
+            }else {
                flag = "false";
             }
         });
     }catch(e){
-
+        console.log("exception:"+e.message)
     }
     return flag;
 }
+

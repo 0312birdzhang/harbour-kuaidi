@@ -58,6 +58,7 @@ Page{
         clip: true
         delegate:ListItem {
             Label{
+		anchors.verticalCenter:parent.verticalCenter
                 id:showprocess
                 wrapMode: Text.WordWrap
                 x:Theme.paddingLarge
@@ -80,7 +81,7 @@ Page{
 
         ViewPlaceholder{
             //id:nohistory
-            enabled: view.count == 0 && !PageStatus.Active
+            enabled: view.count == 0
             text:"没有根据快递单号查询到快递商，点击切换手动选择模式"
             MouseArea{
               anchors.fill:parent

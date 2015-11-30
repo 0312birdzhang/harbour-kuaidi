@@ -26,8 +26,17 @@ Page{
 
     }
 
+    function fillPosts(){
+      for ( var i in Posts.allpost   ){
+            postnames.append({"label":Posts.allpost[i].label,
+                                 "value":Posts.allpost[i].value
+                             });
+        }
+        view.model = postnames
+    }
 
     ListModel {  id:autopostModel }
+    ListModel {  id: postnames    }
 
     SilicaListView {
         id:view
@@ -64,7 +73,11 @@ Page{
         ViewPlaceholder{
             //id:nohistory
             enabled: view.count == 0// && !PageStatus.Active
-            text:"没有根据快递单号查询到快递商"
+            text:"没有根据快递单号查询到快递商，点击切换手动选择模式"
+            MouseAero{
+              anchors.fill:parent
+              onClicked : fillPosts()
+            }
         }
     }
 }

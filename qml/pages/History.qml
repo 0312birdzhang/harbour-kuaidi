@@ -35,23 +35,15 @@ Page{
     allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
 
     Component.onCompleted: {
-        ST.initialize();
+        ST.listModel = listModel;
         ST.getKuaidi("all");
-        mystep = 0;
     }
-    onStatusChanged: {
-        if (status == PageStatus.Active) {
-            mystep =0;
-        }
-    }
-    //onOrientationChanged: ST.getKuaidi("all")
 
     ListModel {  id:listModel }
 
     SilicaListView {
         id:view
         anchors.fill:parent
-        //visible: listModel.count > 0
         header:PageHeader {
             id:header
             title: "查询历史"
@@ -84,9 +76,9 @@ Page{
                 width: parent.width-Theme.paddingLarge
                 text:{
                     if(posttime&&posttime.length >2){
-                        return name+":"+postid+",保存时间:"+posttime
+                        return ST.getLabel(name) + ":"+postid+",保存时间:"+posttime
                     }else{
-                        return name+":"+postid
+                        return ST.getLabel(name) + ":"+postid
                     }
                 }
                 color: Theme.highlightColor
@@ -117,7 +109,7 @@ Page{
                 }
             }
             onClicked: {
-                pageStack.push(Qt.resolvedUrl("HistoryDetail.qml"),
+                pageStack.push(Qt.resolvedUrl("ShowPage.qml"),
                                { "id":id,
                                    "wuliutype":name,
                                    "postid":postid

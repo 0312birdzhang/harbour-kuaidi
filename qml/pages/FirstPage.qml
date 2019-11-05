@@ -31,7 +31,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-import "./parser.js" as JS
 import "./allposts.js" as Posts
 
 Page {
@@ -47,11 +46,7 @@ Page {
                              });
         }
     }
-    onStatusChanged: {
-        if (status == PageStatus.Active) {
-            mystep =0;
-        }
-    }
+
     ListModel {
         id: postnames
         function update(){

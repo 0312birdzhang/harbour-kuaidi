@@ -1,42 +1,38 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import "./parser.js" as JS
 import "./allposts.js" as Posts
 
 Page{
     id:secondWizardPage
     property string postid
-    property int modelCount: view.count
     allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
 
-    onModelCountChanged: {
-        if(view.count == 1){
-            pageStack.push(Qt.resolvedUrl("ShowPage.qml"),
-                         {
-                             "wuliutype":autopostModel.get(0).value,
-                             "postid":postid,
-                             "wuliuming":autopostModel.get(0).label
-                         })
-        }
-    }
-
     Component.onCompleted: {
-        JS.autopostModel = autopostModel
-        JS.getPostname(postid)
-
+        py.queryVendor(postid);
     }
 
-    function fillPosts(){
-      for ( var i in Posts.allpost   ){
-            postnames.append({"label":Posts.allpost[i].label,
-                                 "value":Posts.allpost[i].value
-                             });
+    Connections{
+        target: signalCenter;
+        // {"comCode":"","num":"xxxxx","auto":[{"comCode":"ecmscn","lengthPre":16,"noCount":291823,"noPre":"ESF"}]}
+        onGetvendor:{
+            if(vendjson){
+                var comCode = vendjson.auto[0].comCode;
+                autopostModel.append({
+                              "value": comCode,
+                              "label": Posts.getLabel(comCode)
+                            })
+            }else{
+                for ( var i in Posts.allpost ){
+                    autopostModel.append({"label":Posts.allpost[i].label,
+                                        "value":Posts.allpost[i].value
+                                    });
+                }
+            }
         }
-        view.model = postnames
     }
 
-    ListModel {  id:autopostModel }
-    ListModel {  id: postnames    }
+
+    ListModel {  id: autopostModel }
 
     BusyIndicator {
             id:progress
@@ -49,7 +45,7 @@ Page{
     SilicaListView {
         id:view
         anchors.fill:parent
-        header:PageHeader {
+        header: PageHeader {
             id:header
             title: "选择快递商"
         }
@@ -58,8 +54,8 @@ Page{
         clip: true
         delegate:ListItem {
             Label{
-		anchors.verticalCenter:parent.verticalCenter
                 id:showprocess
+		        anchors.verticalCenter:parent.verticalCenter
                 wrapMode: Text.WordWrap
                 x:Theme.paddingLarge
                 maximumLineCount:2
@@ -80,12 +76,10 @@ Page{
         VerticalScrollDecorator {}
 
         ViewPlaceholder{
-            //id:nohistory
             enabled: view.count == 0
-            text:"没有根据快递单号查询到快递商，点击切换手动选择模式"
+            text:"没有根据快递单号查询到快递商，将展示全部"
             MouseArea{
               anchors.fill:parent
-              onClicked : fillPosts()
             }
         }
     }

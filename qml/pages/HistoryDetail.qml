@@ -34,150 +34,136 @@ Page{
 
     id:showdetail
     property var id
-    property var name
-    property var postid
-
-    property var description
-    property var postinfo:""
-    property var highlightedpostinfo: ""
+    property string name
+    property string postid
+    property string wuliutype
+    property string description
+    property string postinfo:""
+    property string highlightedpostinfo: ""
     property int operationType: PageStackAction.Animated
     allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
-        Component.onCompleted: {
-            ST.themeColor =  Theme.highlightColor;
-            description = ST.getKuaidiInfo(id);
-            mystep = 1;
-            coverpostid=id;
 
+    Component.onCompleted: {
+        // description = ST.getKuaidiInfo(id);
+        py.getpostinfo(wuliutype, postid)
+    }
+
+
+    SilicaFlickable{
+        id:view
+        anchors.fill: parent
+        contentHeight: header.height+descLabel.height+desc.height
+                        +postLabel.height+postinfoLabel.height
+                        +highlightLabel.height+ Theme.paddingLarge*2
+
+        PageHeader {
+            id:header
+            title: "物流信息"
         }
-        onStatusChanged: {
-            if (status == PageStatus.Active) {
-                mystep =1;
-            }
-        }
-
-        BusyIndicator {
-                  id:progress
-                  running: true
-                  parent:showdetail
-                  size: BusyIndicatorSize.Large
-                  anchors.centerIn: parent
-          }
-
-        SilicaFlickable{
-            id:view
-            anchors.fill: parent
-            contentHeight: header.height+descLabel.height+desc.height
-                           +postLabel.height+postinfoLabel.height
-                           +highlightLabel.height+ Theme.paddingLarge*2
-
-            PageHeader {
-                id:header
-                title: "物流信息"
-            }
-            PullDownMenu{
-                MenuItem{
-                    text:"刷新"
-                    onClicked: {
-                         ST.getKuaidiInfo(id);
-                    }
+        PullDownMenu{
+            MenuItem{
+                text:"刷新"
+                onClicked: {
+                    py.getpostinfo(wuliutype, postid);
                 }
             }
-
-            Separator {
-                width:parent.width - descLabel.width;
-                color: Theme.highlightColor
-                anchors{
-                    right: descLabel.left
-                    top:descLabel.top
-                    topMargin: descLabel.height/2
-                    margins: Theme.paddingLarge
-                }
-            }
-            Label{
-                id:descLabel
-                text:"备注"
-                color: Theme.highlightColor
-                font.pixelSize: Theme.fontSizeMedium
-                anchors{
-                    right: parent.right
-                    top:header.bottom
-                    margins: Theme.paddingLarge
-                }
-            }
-
-            Label{
-                id:desc
-                width: parent.width
-                wrapMode: Text.WordWrap
-                font.pixelSize: Theme.fontSizeExtraSmall
-                truncationMode: TruncationMode.Fade
-                text: description
-                color: view.highlighted ? Theme.highlightColor : Theme.primaryColor
-                anchors{
-                    top:descLabel.bottom
-                    //horizontalCenter: parent.horizontalCenter
-                    left:parent.left
-                    right:parent.right
-                    margins: Theme.paddingLarge
-                }
-            }
-            Separator {
-                width:parent.width - postLabel.width;
-                color: Theme.highlightColor
-                anchors{
-                    left: parent.left
-                    right: postLabel.left
-                    top:postLabel.top
-                    topMargin: postLabel.height/2
-                }
-            }
-            Label{
-                id:postLabel
-                text:"物流"
-                color: Theme.highlightColor
-                font.pixelSize: Theme.fontSizeMedium
-                anchors{
-                    margins: Theme.paddingLarge
-                    top:desc.bottom
-                    right: parent.right
-                }
-            }
-            Label{
-                id:highlightLabel
-                anchors{
-                    left:parent.left
-                    right:parent.right
-                    top:postLabel.bottom
-                    margins: Theme.paddingLarge
-                }
-
-                wrapMode: Text.WordWrap
-                width: parent.width
-                text: highlightedpostinfo
-                color: Theme.highlightColor
-            }
-            Label{
-                id:postinfoLabel
-                anchors{
-                    left:parent.left
-                    right:parent.right
-                    top:highlightLabel.bottom
-                    margins: Theme.paddingLarge
-                }
-
-                wrapMode: Text.WordWrap
-                width: parent.width
-                text: postinfo
-                color: view.highlighted ? Theme.highlightColor : Theme.primaryColor
-            }
-
-            VerticalScrollDecorator{}
         }
 
-        Timer{
-            id:processingtimer;
-            interval: 30000;
-            onTriggered: addNotification("加载失败",3)
+        Separator {
+            width:parent.width - descLabel.width;
+            color: Theme.highlightColor
+            anchors{
+                right: descLabel.left
+                top:descLabel.top
+                topMargin: descLabel.height/2
+                margins: Theme.paddingLarge
+            }
         }
+        Label{
+            id:descLabel
+            text:"备注"
+            color: Theme.highlightColor
+            font.pixelSize: Theme.fontSizeMedium
+            anchors{
+                right: parent.right
+                top:header.bottom
+                margins: Theme.paddingLarge
+            }
+        }
+
+        Label{
+            id:desc
+            width: parent.width
+            wrapMode: Text.WordWrap
+            font.pixelSize: Theme.fontSizeExtraSmall
+            truncationMode: TruncationMode.Fade
+            text: description
+            color: view.highlighted ? Theme.highlightColor : Theme.primaryColor
+            anchors{
+                top:descLabel.bottom
+                //horizontalCenter: parent.horizontalCenter
+                left:parent.left
+                right:parent.right
+                margins: Theme.paddingLarge
+            }
+        }
+        Separator {
+            width:parent.width - postLabel.width;
+            color: Theme.highlightColor
+            anchors{
+                left: parent.left
+                right: postLabel.left
+                top:postLabel.top
+                topMargin: postLabel.height/2
+            }
+        }
+        Label{
+            id:postLabel
+            text:"物流"
+            color: Theme.highlightColor
+            font.pixelSize: Theme.fontSizeMedium
+            anchors{
+                margins: Theme.paddingLarge
+                top:desc.bottom
+                right: parent.right
+            }
+        }
+        Label{
+            id:highlightLabel
+            anchors{
+                left:parent.left
+                right:parent.right
+                top:postLabel.bottom
+                margins: Theme.paddingLarge
+            }
+
+            wrapMode: Text.WordWrap
+            width: parent.width
+            text: highlightedpostinfo
+            color: Theme.highlightColor
+        }
+        Label{
+            id: postinfoLabel
+            anchors{
+                left:parent.left
+                right:parent.right
+                top:highlightLabel.bottom
+                margins: Theme.paddingLarge
+            }
+
+            wrapMode: Text.WordWrap
+            width: parent.width
+            text: postinfo
+            color: view.highlighted ? Theme.highlightColor : Theme.primaryColor
+        }
+
+        VerticalScrollDecorator{}
+    }
+
+    Timer{
+        id:processingtimer;
+        interval: 30000;
+        onTriggered: addNotification("加载失败",3)
+    }
 
 }

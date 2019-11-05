@@ -19,9 +19,7 @@ function initialize() {
                     tx.executeSql('CREATE TABLE IF NOT EXISTS kuaidi(id integer primary key AutoIncrement,postid TEXT,name TEXT,description TEXT,posttime TEXT);');
 
                 });
-    if(checkColumnExists("posttime") == "false"){
-        updateTable();
-    }
+
 }
 
 
@@ -104,17 +102,16 @@ function updateKuaidi(id,postid,description) {
     return res;
 }
 
+var listModel;
 // 获取查询列表
 function getKuaidi(all) {
 
     var sql='SELECT * FROM kuaidi order by id desc;';
     if(all === "three"){
         sql = 'SELECT * FROM kuaidi order by id desc limit 3;';
-
     }
 
     var db = getDatabase();
-    var res="";
     listModel.clear()
     try{
         db.transaction(function(tx) {
@@ -124,7 +121,7 @@ function getKuaidi(all) {
                     listModel.append({
                                          "id":rs.rows.item(i).id,
                                          "postid":rs.rows.item(i).postid,
-                                         "name":dictnames(rs.rows.item(i).name),
+                                         "name": rs.rows.item(i).name,
                                          "description":rs.rows.item(i).description,
                                          "posttime":rs.rows.item(i).posttime
 
@@ -133,10 +130,7 @@ function getKuaidi(all) {
             }
         })}
     catch(e){
-        console.log("error...reget")
-
-
-
+        console.log("error...", e)
     }
 }
 
@@ -147,9 +141,6 @@ function getKuaidiInfo(id) {
     var db = getDatabase();
     var name="";
     var postid="";
-
-
-    var res="";
     db.transaction(function(tx) {
         var rs = tx.executeSql('SELECT * FROM kuaidi where id =?;',[id]);
         if (rs.rows.length > 0) {
@@ -189,109 +180,4 @@ function isExist(postid) {
 
 }
 
-
-
-
-
-
-
-function load(type,postid) {
-
-    var xhr = new XMLHttpRequest();
-    var url="http://m.kuaidi100.com/query?type="+type+"&postid="+postid+"&id=1&valicode=&temp="+getRandom();
-    xhr.open("GET",url,true);
-    xhr.onreadystatechange = function()
-    {
-        if ( xhr.readyState == xhr.DONE)
-        {
-            if ( xhr.status == 200)
-            {
-                var jsonObject = eval('(' + xhr.responseText + ')');
-
-                loaded(jsonObject);
-
-
-            }
-        }
-    }
-    xhr.send();
-}
-
-
-
-function loaded(jsonObject){
-    var alltext="<br>";
-    var tmptext="<br>"
-    if(jsonObject.status != "200" ){
-        alltext = jsonObject.message;
-
-    }
-    else{
-        for ( var process in jsonObject.data   ){
-            //最近物流根据主题高亮
-            if( process == 0 ){
-
-                tmptext = jsonObject.data[process].time+"<br>"+jsonObject.data[process].context;
-            }else{
-
-                alltext += jsonObject.data[process].time+"<br>"+jsonObject.data[process].context+"<br><br>";
-            }
-        }
-
-    }
-    progress.visible = false;
-    postinfo = alltext;
-    highlightedpostinfo = tmptext;
-    //return alltext;
-}
-
-//快递字典
-
-
-function dictnames(name){
-
-    try{
-        for ( var i in allpost   ){
-            if(name == allpost[i].value){
-                return allpost[i].label
-            }
-        }
-    }
-    catch(e){
-        return "error"
-    }
-
-}
-
-// 修改表结构
-function updateTable() {
-    var db = getDatabase();
-    db.transaction(function(tx) {
-        var rs = tx.executeSql('ALTER TABLE kuaidi ADD column posttime TEXT;');
-    });
-    db.transaction(function(tx) {
-        var rs = tx.executeSql('update kuaidi set posttime = " ";');
-    });
-
-}
-
-function checkColumnExists(columnName){
-    var flag = "true";
-    var sql = 'select * from sqlite_master where name = "kuaidi" and sql like "%'+columnName+'%";';
-    console.log("SQL:"+sql)
-    try{
-        var db = getDatabase();
-        db.transaction(function(tx){
-          var rs =  tx.executeSql(sql);
-            if(rs.rows.length > 0) {
-               flag = "true";
-            }else {
-               flag = "false";
-            }
-        });
-    }catch(e){
-        console.log("exception:"+e.message)
-    }
-    return flag;
-}
 

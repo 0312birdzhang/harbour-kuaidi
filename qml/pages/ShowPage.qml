@@ -28,7 +28,6 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 import QtQuick 2.0
-import "parser.js" as JS
 import "storage.js" as ST
 import Sailfish.Silica 1.0
 Page{
@@ -41,23 +40,36 @@ Page{
     SilicaFlickable {
         anchors.fill: parent
         Component.onCompleted: {
-
             ST.themeColor =  Theme.highlightColor;
+            py.getpostinfo(wuliutype, postid)
+        }
 
-            JS.load(wuliutype,postid);
-        }
-        BusyIndicator {
-            id:progress
-            running: true
-            parent:showpage
-            size: BusyIndicatorSize.Large
-            anchors.centerIn: parent
-        }
         ListModel {  id:listModel }
 
+        Connections{
+            target: signalCenter;
+            onGetpostinfo:{
+                if(postinfo && postinfo.status != "200" ){
+                    listModel.append({
+                                        "sort":"",
+                                        "time":"",
+                                        "context": postinfo.message+"<br/><br/>"+"<font color='" + Theme.highlightColor + "'>可能存在快递延误,请保存订单稍后再试^_^</font>"
+                                    });
+                }
+                else{
+                    for ( var process in postinfo.data ){
+                        listModel.append({
+                                "time": "<font color='" + Theme.highlightColor + "'>"+postinfo.data[process].time+"</font>",
+                                "context": "<font color='" + Theme.highlightColor + "'>"+postinfo.data[process].context+"</font>",
+                                "location": postinfo.data[process].location
+                        });
+                
+                    }
+                }
+            }
+        }
 
         SilicaListView {
-
             id:view
             anchors.fill:parent
             model : listModel
@@ -69,40 +81,28 @@ Page{
             PullDownMenu {
                 MenuItem {
                     id:savebutton
-                    enabled: false
-                    text: "保存订单"
+                    enabled: listModel.count > 0
+                    text: "保存快递单"
                     onClicked:{
-
                         var isExist = ST.isExist(postid)
                         //先查询是否有此条记录
-
                         if(isExist.indexOf("true") !== -1){
                             savebutton.text ="你已经保存过了";
                             savebutton.enabled = false;
                         }else{
                             pageStack.push(firstWizardPage)
-
                         }
-
                     }
                 }
             }
-
-            delegate:
-                Text {
-                id:showprocess
-                wrapMode: Text.WordWrap
-                x: Theme.paddingLarge
-                width: root.width -  Theme.fontSizeMedium
-                text: time+"<br/>"+context+"<br/>"
-
-                color: view.highlighted ? Theme.highlightColor : Theme.primaryColor
-
+            delegate: Text {
+                    wrapMode: Text.WordWrap
+                    x: Theme.paddingLarge
+                    width: root.width -  Theme.fontSizeMedium
+                    text: time + "<br/>"+context+"<br/>"
+                    color: view.highlighted ? Theme.highlightColor : Theme.primaryColor
             }
-
-
             VerticalScrollDecorator {}
-
         }
     }
 
@@ -119,14 +119,10 @@ Page{
             onAccepted: {
                 var test = ST.setKuaidi(postid,wuliutype,subcomments.text);
                 if(test === "OK"){
-                    //savebutton.text = "保存成功^_^";
                     addNotification("保存成功", 3)
                     savebutton.enabled = false;
-
-
                 }else{
                     addNotification("保存失败", 3)
-                    //savebutton.text = "保存失败%>_<%";
                 }
             }
 
@@ -174,17 +170,8 @@ Page{
                     }
 
                 }
-
-
-
             }
         }
-    }
-
-    Timer{
-        id:processingtimer;
-        interval: 60000;
-        onTriggered: addNotification("加载失败",3)
     }
 
 }

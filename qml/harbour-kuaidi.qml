@@ -32,13 +32,14 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import "pages"
 import "pages/storage.js" as ST
-import org.nemomobile.notifications 1.0
+import Nemo.Notifications 1.0
+import io.thp.pyotherside 1.5
 
 ApplicationWindow
 {
-    id:window
-    property int mystep: 0//用户操作步骤
-    property var coverpostid
+    id: window
+    property bool loading: false
+
     allowedOrientations: Orientation.Landscape | Orientation.Portrait | Orientation.LandscapeInverted
     initialPage: Component { FirstPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
@@ -46,9 +47,46 @@ ApplicationWindow
     Component.onCompleted: {
         ST.initialize();
     }
+
+    BusyIndicator {
+        id: busyIndicator
+        anchors.centerIn: parent
+        running: loading
+        size: BusyIndicatorSize.Large
+    }
+
     Notification{
         id:notification
-        appName: "CnBeta"
+        appName: "我的快递"
+    }
+
+    Timer{
+        id:processingtimer;
+        interval: 40000;
+        onTriggered: signalCenter.loadFailed(qsTr("Request timeout"));
+    }
+    
+    Connections{
+        target: signalCenter;
+        onLoadStarted:{
+            window.loading=true;
+            processingtimer.restart();
+        }
+        onLoadFinished:{
+            window.loading=false;
+            processingtimer.stop();
+        }
+        onLoadFailed:{
+            window.loading=false;
+            processingtimer.stop();
+            notification.show(errorstring);
+        }
+    }
+
+
+
+    SignalCenter{
+        id: signalCenter
     }
 
 
@@ -57,6 +95,32 @@ ApplicationWindow
         notification.previewSummary = message;
         notification.close();
         notification.publish();
+    }
+
+    Python{
+      id: py
+      Component.onCompleted: {
+            addImportPath(Qt.resolvedUrl('./pages'))
+            py.importModule('parser', function () {
+                
+            });
+      }
+      function queryVendor(postid){
+        signalCenter.loadStarted();
+        py.call('parser.kuaidi.queryvendor',[postid], function(ret){
+            signalCenter.getvendor(ret);
+            signalCenter.loadFinished();
+        })
+      }
+
+      function getpostinfo(posttype,postid){
+          signalCenter.loadStarted();
+          py.call('parser.kuaidi.getpostinfo',[posttype,postid], function(ret){
+            signalCenter.getpostinfo(ret);
+            signalCenter.loadFinished();
+          })
+      }
+
     }
 }
 

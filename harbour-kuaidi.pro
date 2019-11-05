@@ -14,14 +14,12 @@ TARGET = harbour-kuaidi
 
 CONFIG += sailfishapp
 
-QT += dbus
-
 SOURCES += src/harbour-kuaidi.cpp
 
 OTHER_FILES += qml/harbour-kuaidi.qml \
     qml/cover/CoverPage.qml \
     qml/pages/FirstPage.qml \
-    qml/pages/*.js\
+    qml/pages/parser.py\
     rpm/harbour-kuaidi.spec \
     rpm/harbour-kuaidi.yaml \
     translations/*.ts \
@@ -32,14 +30,12 @@ OTHER_FILES += qml/harbour-kuaidi.qml \
     qml/pages/EditPage.qml \
     qml/pages/History.qml \
     qml/pages/HistoryDetail.qml \
-    qml/pages/ShowPage.qml
+    qml/pages/ShowPage.qml \
+    qml/pages/AutoPostNamePage.qml
 
 
 # to disable building translations every time, comment out the
 # following CONFIG line
 CONFIG += sailfishapp_i18n
 TRANSLATIONS += translations/harbour-kuaidi-de.ts
-
-DISTFILES += \
-    qml/pages/AutoPostNamePage.qml
 
